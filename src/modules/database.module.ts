@@ -8,7 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       useFactory: async () => {
         const dbConfig = await ormconfig();
         return {
-          
           ...dbConfig,
           keepConnectionAlive: true,
           logging: true,
