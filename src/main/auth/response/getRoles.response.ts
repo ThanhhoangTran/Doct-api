@@ -1,4 +1,4 @@
-import { CustomResponseFields } from '@/common/interface';
+import { CustomResponseFields } from '@/common/response';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()

@@ -5,7 +5,8 @@ export class InitialRoleData1721837110472 implements MigrationInterface {
     await queryRunner.query(`
         INSERT INTO "role" ("name", "description")
         VALUES ('patient', 'patient of system'),
-        ('doctor', 'doctor, who use system to raise schedule');
+        ('doctor', 'doctor, who use system to raise schedule'),
+        ('super_admin', 'Super admin of system');
     `);
   }
 

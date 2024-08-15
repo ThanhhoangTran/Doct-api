@@ -5,7 +5,7 @@ import { configuration } from '../../config';
 
 export const CACHE_NAMESPACE = {
   PersonContext: 'person-context-',
-  Prefix: `polaris-${configuration.api.nodeEnv}`,
+  Prefix: `doct-${configuration.api.nodeEnv}`,
   Entity: 'entity',
 };
 

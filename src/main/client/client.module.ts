@@ -11,9 +11,9 @@ import { AuthModule } from '../auth/auth.module';
       path: '/playground/client',
       autoSchemaFile: join(process.cwd(), 'schemaClient.gql'),
       sortSchema: true,
+      include: [AuthModule],
     }),
     AuthModule,
   ],
-  providers: [AuthModule],
 })
 export class ClientModule {}

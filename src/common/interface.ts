@@ -1,10 +1,10 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { EntityManager, FindOptionsWhere } from 'typeorm';
 
-@ObjectType()
-export class CustomResponseFields {
-  @Field(() => Date)
-  createdAt: Date;
-
-  @Field(() => Date)
-  updatedAt: Date;
+export interface IBaseRepository<T> {
+  getOneByCondition: (input: {
+    condition: FindOptionsWhere<T>;
+    throwErrorIfNotExisted: boolean;
+    relations?: string[] | undefined;
+    transaction?: EntityManager;
+  }) => Promise<T | undefined>;
 }

@@ -11,11 +11,9 @@ export class CreateUserTable1721825856912 implements MigrationInterface {
                 "password"      VARCHAR(100)     NOT NULL,
                 "address"       VARCHAR          NOT NULL,
                 "phone"         VARCHAR(100)     NOT NULL,
-                "role_id"       UUID            NOT NULL,
                 "created_at"  TIMESTAMP WITH TIME ZONE    DEFAULT now(),
                 "updated_at"  TIMESTAMP WITH TIME ZONE    DEFAULT now(),
-                CONSTRAINT "PK_user_id"  PRIMARY KEY ("id"),
-                CONSTRAINT "FK_user_role_id" FOREIGN KEY ("role_id") REFERENCES "role" ("id")
+                CONSTRAINT "PK_user_id"  PRIMARY KEY ("id")
             )
         `);
   }
