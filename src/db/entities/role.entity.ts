@@ -7,15 +7,15 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
   name: 'role',
 })
 export class Role extends CustomBaseEntity {
-  @Field((_type) => ID)
+  @Field(_type => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field((_type) => String)
+  @Field(_type => String)
   @Column('varchar', { length: 30 })
   name: string;
 
-  @Field((_type) => String)
+  @Field(_type => String)
   @Column('varchar')
   description: string;
 }

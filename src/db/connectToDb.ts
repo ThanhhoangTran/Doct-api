@@ -1,10 +1,4 @@
-import {
-  Connection,
-  ConnectionManager,
-  ConnectionOptions,
-  createConnection,
-  getConnectionManager,
-} from 'typeorm';
+import { Connection, ConnectionManager, ConnectionOptions, createConnection, getConnectionManager } from 'typeorm';
 
 import { ormconfig } from './ormconfig';
 import 'dotenv/config';
@@ -16,10 +10,7 @@ export class ConnectToDb {
     this.connectionManager = getConnectionManager();
   }
 
-  public async getConnection(
-    connectionName = 'default',
-    nodeEnv?: string,
-  ): Promise<Connection> {
+  public async getConnection(connectionName = 'default', nodeEnv?: string): Promise<Connection> {
     let connection: Connection;
     if (this.connectionManager.has(connectionName)) {
       connection = this.connectionManager.get(connectionName);

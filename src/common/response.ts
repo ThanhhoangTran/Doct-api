@@ -8,4 +8,3 @@ export class CustomResponseFields {
   @Field(() => Date)
   updatedAt: Date;
 }
-

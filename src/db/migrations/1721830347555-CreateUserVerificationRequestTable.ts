@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateUserVerificationRequestTable1721830347555
-  implements MigrationInterface
-{
+export class CreateUserVerificationRequestTable1721830347555 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       CREATE TYPE USER_VERIFICATION_REQUEST_TYPE AS ENUM ('reset_password');

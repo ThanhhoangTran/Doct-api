@@ -6,6 +6,8 @@ export const APP_ENV = {
   TEST: 'test',
 };
 
+export type ENUM_TYPE<T extends Object> = T[keyof T];
+
 export const USER_VERIFICATION_REQUEST_TYPE = {
   RESET_PASSWORD: 'reset_password',
 } as const;
@@ -16,5 +18,6 @@ export const ROLE_NAME = {
   PATIENT: 'patient',
 } as const;
 
-export type ENUM_TYPE<T extends Object> = T[keyof T];
 export type ROLE_NAME_TYPE = ENUM_TYPE<typeof ROLE_NAME>;
+
+export type USER_VERIFICATION_REQUEST = ENUM_TYPE<typeof USER_VERIFICATION_REQUEST_TYPE>;

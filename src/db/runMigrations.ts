@@ -11,9 +11,7 @@ export const runMigrations = async () => {
 const main = async () => {
   const nodeEnv = process.argv[3] ? process.argv[3] : configuration.api.nodeEnv;
   if (process.argv[2] === 'create') {
-    return executeCommandLine(
-      `yarn typeorm migration:create src/db/migrations/${process.argv[3]}`,
-    );
+    return executeCommandLine(`yarn typeorm migration:create src/db/migrations/${process.argv[3]}`);
   }
 
   const connectToDb = new ConnectToDb();

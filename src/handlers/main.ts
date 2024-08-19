@@ -19,12 +19,8 @@ async function bootstrap() {
 
     isDevelopment
       ? (Logger.log(`Server is running on: 🚀🚀🚀${await app.getUrl()} 🚀🚀🚀`),
-        Logger.log(
-          `Client server on: 🚀🚀🚀 http://${domain}:${port}/playground/client 🚀🚀🚀 `,
-        ),
-        Logger.log(
-          `Admin server on: 🚀🚀🚀 http://${domain}:${port}/playground/admin 🚀🚀🚀 `,
-        ))
+        Logger.log(`Client server on: 🚀🚀🚀 http://${domain}:${port}/playground/client 🚀🚀🚀 `),
+        Logger.log(`Admin server on: 🚀🚀🚀 http://${domain}:${port}/playground/admin 🚀🚀🚀 `))
       : Logger.log(`Server is listening on port: ${port} 🚀🚀🚀`);
   } catch (error) {
     Logger.error(`❌  Error starting server, ${error}`, '', 'Bootstrap', false);

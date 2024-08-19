@@ -1,11 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  BaseEntity,
-  BeforeInsert,
-  BeforeUpdate,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { BaseEntity, BeforeInsert, BeforeUpdate, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @ObjectType({ isAbstract: true })
 export class CustomBaseEntity extends BaseEntity {

@@ -6,14 +6,10 @@ export class PasswordUtil {
     return bcryptjs.hash(password, Number(configuration.bcrypt.salt));
   }
 
-  static async validateHashPassword(
-    password: string,
-    hash: string,
-    errorMessageIfNotMatched?: string,
-  ): Promise<boolean> {
+  static async validateHashPassword(password: string, hash: string, errorMessageIfNotMatched?: string): Promise<boolean> {
     const validated = await bcryptjs.compare(password, hash);
     if (!validated && errorMessageIfNotMatched) {
-      throw new Error('Password not match');
+      throw new Error(errorMessageIfNotMatched);
     }
 
     return validated;

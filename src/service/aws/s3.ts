@@ -29,13 +29,7 @@ export class S3Adapter {
       .promise();
   }
 
-  getSignedUrl({
-    pathFile,
-    fileType,
-  }: {
-    pathFile: string;
-    fileType: string;
-  }): Promise<string> {
+  getSignedUrl({ pathFile, fileType }: { pathFile: string; fileType: string }): Promise<string> {
     const s3Params = {
       Bucket: this.bucket,
       Key: pathFile,

@@ -1,0 +1,27 @@
+name: Development
+
+on:
+  pull_request:
+    branches: ['main']
+  push:
+    branches: ['main']
+
+jobs:
+  lint:
+    name: Test application
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: '☁️ checkout repository'
+        uses: actions/checkout@v3
+
+      - name: '🔧 setup node'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.20.4
+
+      - name: 'install yarn'
+        run: yarn install
+
+      - name: 'run lint code'
+        run: yarn lint

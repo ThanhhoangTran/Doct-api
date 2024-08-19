@@ -1,20 +1,15 @@
 import { DataSourceOptions } from 'typeorm';
 
-export type EntitiesAndMigrationsOpts = Pick<
-  DataSourceOptions,
-  'entities' | 'migrations' | 'subscribers'
->;
+export type EntitiesAndMigrationsOpts = Pick<DataSourceOptions, 'entities' | 'migrations' | 'subscribers'>;
 
 export const loadEntitiesAndMigrations = () => {
   if (process.env.WEBPACK_RUNNER) {
     // eslint-disable-next-line no-undef
-    const importAllFunctions = (
-      requireContext: __WebpackModuleApi.RequireContext,
-    ) =>
+    const importAllFunctions = (requireContext: __WebpackModuleApi.RequireContext) =>
       requireContext
         .keys()
         .sort()
-        .map((filename) => {
+        .map(filename => {
           const required = requireContext(filename);
           return Object.keys(required).reduce((result, exportedKey) => {
             const exported = required[exportedKey];
@@ -26,15 +21,11 @@ export const loadEntitiesAndMigrations = () => {
         })
         .flat();
 
-    const entitiesViaWebpack: NonNullable<
-      EntitiesAndMigrationsOpts['entities']
-    > = importAllFunctions(require.context('./entities/', true, /\.ts$/));
+    const entitiesViaWebpack: NonNullable<EntitiesAndMigrationsOpts['entities']> = importAllFunctions(require.context('./entities/', true, /\.ts$/));
     // const subscribersViaWebpack: NonNullable<EntitiesAndMigrationsOpts['subscribers']> = importAllFunctions(
     //   require.context('./subscribers/', true, /\.ts$/)
     // );
-    const migrationsViaWebpack: NonNullable<
-      EntitiesAndMigrationsOpts['migrations']
-    > = importAllFunctions(require.context('./migrations/', true, /\.ts$/));
+    const migrationsViaWebpack: NonNullable<EntitiesAndMigrationsOpts['migrations']> = importAllFunctions(require.context('./migrations/', true, /\.ts$/));
 
     return {
       entities: entitiesViaWebpack,
