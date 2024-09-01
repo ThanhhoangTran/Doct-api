@@ -6,6 +6,17 @@ export const APP_ENV = {
   TEST: 'test',
 };
 
+export const QUERY_OPERATORS = {
+  IN: 'in',
+  NOT_IN: 'nin',
+  EQUAL: 'equal',
+  NOT_EQUAL: 'not_equal',
+  GREATER_THAN: 'greater_than',
+  LESS_THAN: 'less_than',
+  GREATER_THAN_EQUAL: 'greater_than_equal',
+  LESS_THAN_EQUAL: 'less_than_equal',
+};
+
 export type ENUM_TYPE<T extends Object> = T[keyof T];
 
 export const USER_VERIFICATION_REQUEST_TYPE = {
@@ -21,3 +32,23 @@ export const ROLE_NAME = {
 export type ROLE_NAME_TYPE = ENUM_TYPE<typeof ROLE_NAME>;
 
 export type USER_VERIFICATION_REQUEST = ENUM_TYPE<typeof USER_VERIFICATION_REQUEST_TYPE>;
+
+export const SELECT_USER = ['firstName', 'lastName', 'email', 'id', 'role', 'fullName'];
+
+export const EVENT_TYPE = {
+  APPOINTMENT: 'appointment',
+  MEETING: 'meeting',
+  OPERATION: 'operation',
+};
+
+export const CONSULTATION_TYPE = {
+  CLINIC: 'clinic',
+  VIDEO: 'video',
+};
+
+export const CONSULTATION_STATUS = {
+  CONFIRMED: 'confirmed',
+  CANCELLED: 'cancelled',
+  RESCHEDULED: 'rescheduled',
+  WAITING: 'waiting',
+};

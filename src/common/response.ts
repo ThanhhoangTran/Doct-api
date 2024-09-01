@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class CustomResponseFields {
@@ -7,4 +7,34 @@ export class CustomResponseFields {
 
   @Field(() => Date)
   updatedAt: Date;
+}
+
+@ObjectType()
+export class MetaPaginationInterface {
+  @Field(_type => Int)
+  totalItems: number;
+
+  @Field(_type => Int)
+  itemCount: number;
+
+  @Field(_type => Int)
+  itemsPerPage: number;
+
+  @Field(_type => Int)
+  totalPages: number;
+
+  @Field(_type => Int)
+  currentPage: number;
+}
+
+export function PaginationResponse<T>(item: any) {
+  @ObjectType({ isAbstract: true })
+  class PaginationResponse {
+    @Field(_type => [item])
+    items: T[];
+
+    @Field(_type => MetaPaginationInterface)
+    meta: MetaPaginationInterface;
+  }
+  return PaginationResponse;
 }

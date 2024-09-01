@@ -1,5 +1,5 @@
 import { ROLE_NAME, ROLE_NAME_TYPE } from '@/common/constants';
-import { Match } from '@/common/customDecorator/match.decorator';
+import { Match } from '@/common/decorators/match.decorator';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail, MinLength } from 'class-validator';
 

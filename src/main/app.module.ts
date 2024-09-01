@@ -4,6 +4,7 @@ import { I18n_Module } from '@/modules/i18n.module';
 import { ClientModule } from './client/client.module';
 import { JwtModule } from '@nestjs/jwt';
 import { configuration } from '@/config';
+import { JwtStrategy } from '@/service/jwt/strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -15,5 +16,6 @@ import { configuration } from '@/config';
       signOptions: { expiresIn: configuration.jwt.expiredIn },
     }),
   ],
+  providers: [JwtStrategy],
 })
 export class AppModule {}

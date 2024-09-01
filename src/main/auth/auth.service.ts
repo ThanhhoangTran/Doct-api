@@ -11,12 +11,13 @@ import { pick } from 'lodash';
 import { Jwt } from '@/service/jwt/jwt';
 import { Token } from '@/db/entities/token.entity';
 import { RoleRepository } from '@/db/repositories/role.repository';
-import { ROLE_NAME } from '@/common/constants';
+import { ROLE_NAME, SELECT_USER } from '@/common/constants';
+import { SignInResponse } from './response/signIn.response';
+import { BaseQueryFilterDto } from '@/common/dtos/queryFilter.dto';
+import { BuilderPaginationResponse } from '@/common/utilFunction';
 
 @Injectable()
 export class AuthService {
-  private SELECT_USER = ['firstName', 'lastName', 'email', 'id', 'role'];
-
   public constructor(
     private readonly dataSource: DataSource,
     private readonly userRepository: UserRepository,
@@ -62,9 +63,9 @@ export class AuthService {
     });
   }
 
-  public async signIn(input: SignInDto) {
+  public async signIn(input: SignInDto): Promise<SignInResponse> {
     const { email, password } = input;
-    const user = await this.userRepository.createQueryBuilder('User').where({ email }).addSelect('User.password').getOne();
+    const user = await this.userRepository.createQueryBuilder('User').leftJoinAndSelect('User.role', 'Role').where({ email }).addSelect('User.password').getOne();
     if (!user) {
       throw new UserInputError('Cannot find your email');
     }
@@ -74,8 +75,8 @@ export class AuthService {
     return await this.dataSource.transaction(async transaction => await this.generateUserWithAccessToken(user, transaction));
   }
 
-  private async generateUserWithAccessToken(user: User, transaction?: EntityManager) {
-    const data = pick(user, this.SELECT_USER);
+  private async generateUserWithAccessToken(user: User, transaction?: EntityManager): Promise<SignInResponse> {
+    const data = pick(user, SELECT_USER);
 
     const token = await this.createAccessToken(data, transaction);
 
@@ -83,7 +84,7 @@ export class AuthService {
       ...data,
       token: token.accessToken,
       refreshToken: token.refreshToken,
-    };
+    } as SignInResponse;
   }
 
   private async createAccessToken(user: Partial<User>, transaction?: EntityManager) {
@@ -104,5 +105,12 @@ export class AuthService {
     await trx.getRepository(Token).save(newToken);
 
     return newToken;
+  }
+
+  public test(filter: BaseQueryFilterDto) {
+    console.log('🚀 ~ AuthService ~ test ~ filter:', filter);
+    const builder = this.userRepository.createQueryBuilder();
+
+    return new BuilderPaginationResponse(builder, filter).execute();
   }
 }
