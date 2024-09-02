@@ -8,3 +8,11 @@ export interface IBaseRepository<T> {
     transaction?: EntityManager;
   }) => Promise<T | undefined>;
 }
+
+export interface UserContextInterface {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  fullName: string;
+}

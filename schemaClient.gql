@@ -14,6 +14,12 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+enum EVENT_TYPE {
+  APPOINTMENT
+  MEETING
+  OPERATION
+}
+
 input FilterDto {
   data: String!
   field: String!
@@ -30,6 +36,7 @@ type MetaPaginationInterface {
 
 type Mutation {
   signUp(input: SignUpDto!): User!
+  upsertScheduleTimingEvent(input: UpsertScheduleTimingEventInput!): TimeOpeningResponse!
 }
 
 enum QUERY_OPERATORS {
@@ -44,7 +51,7 @@ enum QUERY_OPERATORS {
 }
 
 type Query {
-  Test(queryParams: BaseQueryFilterDto!): UserPaginationResponse!
+  getScheduleTimingEvents(queryParams: BaseQueryFilterDto!): TimeOpeningsResponse!
   signIn(input: SignInDto!): SignInResponse!
 }
 
@@ -89,6 +96,26 @@ input SignUpDto {
   roleType: ROLE_NAME!
 }
 
+type TimeOpeningResponse {
+  endOpening: DateTime!
+  event: EVENT_TYPE!
+  id: ID!
+  startOpening: DateTime!
+  userId: ID!
+}
+
+type TimeOpeningsResponse {
+  items: [TimeOpeningResponse!]!
+  meta: MetaPaginationInterface!
+}
+
+input UpsertScheduleTimingEventInput {
+  endOpening: DateTime!
+  eventType: EVENT_TYPE! = APPOINTMENT
+  id: ID
+  startOpening: DateTime!
+}
+
 type User {
   address: String!
   createdAt: DateTime
@@ -101,9 +128,4 @@ type User {
   role: Role!
   roleId: ID!
   updatedAt: DateTime
-}
-
-type UserPaginationResponse {
-  items: [User!]!
-  meta: MetaPaginationInterface!
 }

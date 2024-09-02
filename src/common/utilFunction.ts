@@ -23,7 +23,7 @@ export class BuilderPaginationResponse<T> {
     this.builder = builder;
     this.queryFilter = queryFilter;
   }
-  async execPagination(filter: BaseQueryFilterDto) {
+  private async execPagination(filter: BaseQueryFilterDto) {
     const { pageNumber, pageSize } = filter;
     const skipNumber = (pageNumber - 1) * pageSize;
 
@@ -36,7 +36,7 @@ export class BuilderPaginationResponse<T> {
       totalPages: Math.ceil(countNumber / pageSize),
       currentPage: pageNumber,
     };
-    return { items, meta };
+    return { items: items, meta } as T;
   }
 
   async execute() {

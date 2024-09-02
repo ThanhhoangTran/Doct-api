@@ -13,8 +13,6 @@ import { Token } from '@/db/entities/token.entity';
 import { RoleRepository } from '@/db/repositories/role.repository';
 import { ROLE_NAME, SELECT_USER } from '@/common/constants';
 import { SignInResponse } from './response/signIn.response';
-import { BaseQueryFilterDto } from '@/common/dtos/queryFilter.dto';
-import { BuilderPaginationResponse } from '@/common/utilFunction';
 
 @Injectable()
 export class AuthService {
@@ -105,12 +103,5 @@ export class AuthService {
     await trx.getRepository(Token).save(newToken);
 
     return newToken;
-  }
-
-  public test(filter: BaseQueryFilterDto) {
-    console.log('🚀 ~ AuthService ~ test ~ filter:', filter);
-    const builder = this.userRepository.createQueryBuilder();
-
-    return new BuilderPaginationResponse(builder, filter).execute();
   }
 }
