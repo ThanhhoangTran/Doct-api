@@ -6,7 +6,7 @@ import { UserInputError } from '@nestjs/apollo';
 import { messageKey } from '@/i18n';
 import { TimeOpeningsResponse } from './dtos/response/timeOpeningsResponse';
 import { BaseQueryFilterDto } from '@/common/dtos/queryFilter.dto';
-import { BuilderPaginationResponse } from '@/common/utilFunction';
+import { BuilderPaginationResponse, notUndefined } from '@/common/utilFunction';
 import { ScheduleTimingEventValidatorImpl } from './helpers/implementations/scheduleTimingEventValidatorImpl';
 import { ScheduleTimingEventValidator } from './helpers/abstractions/scheduleTimingEventValidator';
 
@@ -28,7 +28,7 @@ export class TimeOpeningService {
       startTime: rest.startOpening,
       endTime: rest.endOpening,
       userId: currentUser.id,
-      excludeTimeOpeningIds: [id],
+      excludeTimeOpeningIds: [id].filter(notUndefined),
     });
 
     const timeOpening = this.timeOpeningRepo.merge(existingTimeOpening ?? this.timeOpeningRepo.create({ userId: currentUser.id }), { ...rest, event: rest.eventType });

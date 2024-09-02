@@ -17,7 +17,7 @@ export class ScheduleTimingEventValidatorImpl implements ScheduleTimingEventVali
     startTime: Date;
     endTime: Date;
     userId: string;
-    excludeTimeOpeningIds: string[];
+    excludeTimeOpeningIds?: string[];
   }): Promise<void> {
     if (startTime >= endTime) {
       throw new UserInputError(messageKey.TIME_OPENING.START_OPENING_CANNOT_GREATER_THAN_END_OPENING);

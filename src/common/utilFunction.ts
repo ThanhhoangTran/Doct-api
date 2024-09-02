@@ -1,7 +1,6 @@
 import { exec } from 'child_process';
 import { SelectQueryBuilder } from 'typeorm';
 import { BaseQueryFilterDto } from './dtos/queryFilter.dto';
-import { count } from 'console';
 import { MetaPaginationInterface } from './response';
 
 export const executeCommandLine = function (command: string) {
@@ -14,6 +13,10 @@ export const executeCommandLine = function (command: string) {
       console.log(`The stderr Buffer from shell: ${stderr.toString()}`);
     }
   });
+};
+
+export const notUndefined = <T>(value: T | undefined | null): value is T => {
+  return typeof value !== 'undefined' && value !== null;
 };
 
 export class BuilderPaginationResponse<T> {

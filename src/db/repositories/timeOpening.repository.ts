@@ -19,13 +19,14 @@ export class TimeOpeningRepository extends BaseRepository<TimeOpening> {
     startOpening: Date;
     endOpening: Date;
     excludeTimeOpeningIds?: string[];
-  }) {
+  }): Promise<boolean> {
     const builder = this.createQueryBuilder().where(`(TimeOpening.startOpening, TimeOpening.endOpening) OVERLAPS (:startOpening, :endOpening)`, {
       startOpening,
       endOpening,
     });
     userId && builder.andWhere('TimeOpening.userId = :userId', { userId });
-    excludeTimeOpeningIds.length && builder.andWhere('TimeOpening.id NOT IN (...:excludeTimeOpeningIds)', { excludeTimeOpeningIds });
-    return !!builder.getCount();
+    excludeTimeOpeningIds.length && builder.andWhere('TimeOpening.id NOT IN (:...excludeTimeOpeningIds)', { excludeTimeOpeningIds });
+
+    return !!(await builder.getCount());
   }
 }
