@@ -26,6 +26,17 @@ input FilterDto {
   operator: QUERY_OPERATORS!
 }
 
+type GetMeResponse {
+  address: String!
+  email: String!
+  firstName: String!
+  fullName: String!
+  id: ID!
+  lastName: String!
+  phone: String!
+  role: RoleResponse!
+}
+
 type MetaPaginationInterface {
   currentPage: Int!
   itemCount: Int!
@@ -35,7 +46,7 @@ type MetaPaginationInterface {
 }
 
 type Mutation {
-  signUp(input: SignUpDto!): User!
+  signUp(input: SignUpDto!): UserResponse!
   upsertScheduleTimingEvent(input: UpsertScheduleTimingEventInput!): TimeOpeningResponse!
 }
 
@@ -51,6 +62,7 @@ enum QUERY_OPERATORS {
 }
 
 type Query {
+  getMe: GetMeResponse!
   getScheduleTimingEvents(queryParams: BaseQueryFilterDto!): TimeOpeningsResponse!
   signIn(input: SignInDto!): SignInResponse!
 }
@@ -61,12 +73,10 @@ enum ROLE_NAME {
   SUPER_ADMIN
 }
 
-type Role {
-  createdAt: DateTime
+type RoleResponse {
   description: String!
   id: ID!
   name: String!
-  updatedAt: DateTime
 }
 
 input SignInDto {
@@ -81,7 +91,7 @@ type SignInResponse {
   id: ID!
   lastName: String!
   refreshToken: String!
-  role: Role!
+  role: RoleResponse!
   token: String!
 }
 
@@ -116,16 +126,11 @@ input UpsertScheduleTimingEventInput {
   startOpening: DateTime!
 }
 
-type User {
-  address: String!
-  createdAt: DateTime
+type UserResponse {
   email: String!
   firstName: String!
   fullName: String!
   id: ID!
   lastName: String!
-  phone: String!
-  role: Role!
-  roleId: ID!
-  updatedAt: DateTime
+  role: RoleResponse!
 }

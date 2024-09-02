@@ -16,14 +16,14 @@ export class FilterDto {
 @InputType()
 export class BaseQueryFilterDto {
   @Field(_type => Number, { defaultValue: 10, nullable: true })
-  pageSize?: number | undefined = 10;
+  pageSize?: number = 10;
 
   @Field(_type => Number, { defaultValue: 1, nullable: true })
-  pageNumber: number = 1;
+  pageNumber?: number = 1;
 
   @Field(_type => FilterDto, { nullable: true })
-  filter: FilterDto;
+  filter?: FilterDto;
 
   @Field(_type => String, { nullable: true })
-  q: string;
+  q?: string;
 }

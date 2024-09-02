@@ -1,9 +1,9 @@
 import { Role } from '@/db/entities/role.entity';
 import { UserRepository } from '@/db/repositories/user.repository';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { SignUpDto } from './dtos/signUp.dto';
+import { SignUpDto } from './dtos/inputs/signUp.dto';
 import { PasswordUtil } from '@/common/passwordUtil';
-import { SignInDto } from './dtos/signIn.dto';
+import { SignInDto } from './dtos/inputs/signIn.dto';
 import { UserInputError } from '@nestjs/apollo';
 import { DataSource, EntityManager } from 'typeorm';
 import { User } from '@/db/entities/user.entity';
@@ -12,7 +12,8 @@ import { Jwt } from '@/service/jwt/jwt';
 import { Token } from '@/db/entities/token.entity';
 import { RoleRepository } from '@/db/repositories/role.repository';
 import { ROLE_NAME, SELECT_USER } from '@/common/constants';
-import { SignInResponse } from './response/signIn.response';
+import { SignInResponse } from './dtos/response/signInResponse';
+import { GetMeResponse } from './dtos/response/getMeResponse';
 
 @Injectable()
 export class AuthService {
@@ -103,5 +104,13 @@ export class AuthService {
     await trx.getRepository(Token).save(newToken);
 
     return newToken;
+  }
+
+  async getMe(userId: string): Promise<GetMeResponse> {
+    return this.userRepository.getOneByCondition({
+      throwErrorIfNotExisted: true,
+      relations: ['role'],
+      condition: { id: userId },
+    });
   }
 }
