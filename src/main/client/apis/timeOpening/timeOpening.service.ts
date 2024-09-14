@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UpsertScheduleTimingEventInput } from './dtos/inputs/scheduleTimingEventInput.dto';
+import { UpsertScheduleTimingEventInput } from './dtos/inputs/upsertScheduleTimingEventInput.dto';
 import { UserContextInterface } from '@/common/interface';
 import { TimeOpeningRepository } from '@/db/repositories/timeOpening.repository';
 import { UserInputError } from '@nestjs/apollo';
@@ -9,12 +9,18 @@ import { BaseQueryFilterDto } from '@/common/dtos/queryFilter.dto';
 import { BuilderPaginationResponse, notUndefined } from '@/common/utilFunction';
 import { ScheduleTimingEventValidatorImpl } from './helpers/implementations/scheduleTimingEventValidatorImpl';
 import { ScheduleTimingEventValidator } from './helpers/abstractions/scheduleTimingEventValidator';
+import { GetTimeOpeningRangesAvailableInput } from './dtos/inputs/getTimeOpeningRangesAvailableInput.dto';
+import { TimeOpeningRangeAvailableResponse } from './dtos/response/timeOpeningAvailableResponse';
+import dayjs from 'dayjs';
+import { GetAvailableTimeOpeningHelperImpl } from './helpers/implementations/getAvailableTimeOpeningHelperImpl';
+import { GetAvailableTimeOpeningHelper } from './helpers/abstractions/getAvailableTimeOpeningHelper';
 
 @Injectable()
 export class TimeOpeningService {
-  constructor(
+  public constructor(
     private readonly timeOpeningRepo: TimeOpeningRepository,
     @Inject(ScheduleTimingEventValidatorImpl) private readonly scheduleTimingEventValidator: ScheduleTimingEventValidator,
+    @Inject(GetAvailableTimeOpeningHelperImpl) private readonly getAvailableTimeOpeningHelper: GetAvailableTimeOpeningHelper,
   ) {}
 
   async upsertScheduleTimingEvent(input: UpsertScheduleTimingEventInput, currentUser: UserContextInterface) {
@@ -38,5 +44,45 @@ export class TimeOpeningService {
   async getScheduleTimingEvents(queryParams: BaseQueryFilterDto, currentUser: UserContextInterface): Promise<TimeOpeningsResponse> {
     const builder = this.timeOpeningRepo.createQueryBuilder().where({ userId: currentUser.id });
     return new BuilderPaginationResponse<TimeOpeningsResponse>(builder, queryParams).execute();
+  }
+
+  async getTimeOpeningRangesAvailable(input: GetTimeOpeningRangesAvailableInput, currentUser: UserContextInterface): Promise<TimeOpeningRangeAvailableResponse[] | undefined> {
+    const { startDate, endDate, filterByOpeningType } = input;
+
+    if (dayjs(startDate).isAfter(endDate)) {
+      throw new UserInputError(messageKey.TIME_OPENING.INVALID_DATE_RANGE);
+    }
+
+    const openingRangeTimeBuilder = this.timeOpeningRepo.getOpeningByRangeTimeBuilder({ startTime: startDate, endTime: endDate, userId: currentUser.id });
+
+    if (filterByOpeningType) openingRangeTimeBuilder.andWhere('TimeOpening.event = :eventType', { eventType: filterByOpeningType });
+
+    const openingTimeByRanges = await openingRangeTimeBuilder.orderBy('TimeOpening.startOpening').getMany();
+    if (!openingTimeByRanges.length) {
+      return undefined;
+    }
+
+    const timeOpeningRangeAvailable: Record<string, Omit<TimeOpeningRangeAvailableResponse, 'date'>> = {};
+
+    //order by consultation_schedules by start_time => not exist case overlaps
+    for (const openingTime of openingTimeByRanges) {
+      const { formattedDate, availableAppointments, availableMeetings, availableOperations } = this.getAvailableTimeOpeningHelper.execute(openingTime);
+      if (!timeOpeningRangeAvailable[formattedDate]) {
+        timeOpeningRangeAvailable[formattedDate] = {
+          appointments: availableAppointments,
+          meetings: [],
+          operations: [],
+        };
+      } else {
+        timeOpeningRangeAvailable[formattedDate].appointments.push(...availableAppointments);
+        timeOpeningRangeAvailable[formattedDate].meetings.push(...availableMeetings);
+        timeOpeningRangeAvailable[formattedDate].operations.push(...availableOperations);
+      }
+    }
+
+    return Object.keys(timeOpeningRangeAvailable).map(formattedDate => ({
+      date: new Date(formattedDate),
+      ...timeOpeningRangeAvailable[formattedDate],
+    }));
   }
 }

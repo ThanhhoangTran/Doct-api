@@ -1,6 +1,7 @@
 import { CustomBaseEntity } from '@/common/baseEntity';
 import { EVENT_TYPE } from '@/common/constants';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ConsultationSchedule } from './consultationSchedule.entity';
 
 @Entity({
   name: 'time_opening',
@@ -20,4 +21,7 @@ export class TimeOpening extends CustomBaseEntity {
 
   @Column({ type: 'uuid' })
   userId: string;
+
+  @OneToMany(_type => ConsultationSchedule, schedule => schedule.timeOpening)
+  consultationSchedules: ConsultationSchedule[];
 }

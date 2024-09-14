@@ -1,7 +1,7 @@
 import { BaseRepository } from '@/common/baseRepository';
 import { TimeOpening } from '../entities/timeOpening.entity';
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { DataSource, SelectQueryBuilder } from 'typeorm';
 
 @Injectable()
 export class TimeOpeningRepository extends BaseRepository<TimeOpening> {
@@ -20,7 +20,7 @@ export class TimeOpeningRepository extends BaseRepository<TimeOpening> {
     endOpening: Date;
     excludeTimeOpeningIds?: string[];
   }): Promise<boolean> {
-    const builder = this.createQueryBuilder().where(`(TimeOpening.startOpening, TimeOpening.endOpening) OVERLAPS (:startOpening, :endOpening)`, {
+    const builder = this.createQueryBuilder('TimeOpening').where(`(TimeOpening.startOpening, TimeOpening.endOpening) OVERLAPS (:startOpening, :endOpening)`, {
       startOpening,
       endOpening,
     });
@@ -28,5 +28,15 @@ export class TimeOpeningRepository extends BaseRepository<TimeOpening> {
     excludeTimeOpeningIds.length && builder.andWhere('TimeOpening.id NOT IN (:...excludeTimeOpeningIds)', { excludeTimeOpeningIds });
 
     return !!(await builder.getCount());
+  }
+
+  public getOpeningByRangeTimeBuilder({ startTime, endTime, userId }: { startTime: Date; endTime: Date; userId: string }): SelectQueryBuilder<TimeOpening> {
+    const builder = this.createQueryBuilder('TimeOpening')
+      .leftJoinAndSelect('TimeOpening.consultationSchedule', 'ConsultationSchedule')
+      .where('TimeOpening.startOpening > :startTime', { startTime })
+      .andWhere('TimeOpening.endOpening < :endTime', { endTime });
+
+    userId && builder.andWhere('TimeOpening.userId = :userId', { userId });
+    return builder;
   }
 }
