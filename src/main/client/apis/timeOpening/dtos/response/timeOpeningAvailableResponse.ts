@@ -2,8 +2,8 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class TimeOpeningRangeAvailableResponse {
-  @Field(_type => Date)
-  date: Date;
+  @Field(_type => String)
+  date: string;
 
   @Field(_type => [AvailableTimeResponse], { nullable: true })
   meetings: AvailableTimeResponse[];

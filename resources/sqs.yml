@@ -1,0 +1,21 @@
+Resource:
+  MessageQueue:
+    Type: AWS::SQS:Queue
+    Properties:
+      QueueName: ${self:custom.sqs}
+      VisibilityTimeout: 300 # 5mins
+      ReceiveMessageWaitTimeSeconds: 20
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+            - DeadLetterQueue
+            - Arn
+        maxReceiveCount: 4
+
+  DeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: ${self:custom.sqs-dlq}
+      MessageRetentionPeriod: 1209600 # 14 Days
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 30

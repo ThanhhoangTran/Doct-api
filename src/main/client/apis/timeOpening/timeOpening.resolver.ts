@@ -33,7 +33,7 @@ export class TimeOpeningResolver {
   async getTimeOpeningRangesAvailable(
     @Args() input: GetTimeOpeningRangesAvailableInput,
     @UserContext() currentUser: UserContextInterface,
-  ): Promise<TimeOpeningRangeAvailableResponse> {
+  ): Promise<TimeOpeningRangeAvailableResponse[] | undefined> {
     return this.timeOpeningService.getTimeOpeningRangesAvailable(input, currentUser);
   }
 }

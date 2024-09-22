@@ -1,0 +1,19 @@
+clientServer:
+  handler: src/handlers/clientServer.handler
+  maximumRetryAttempts: 1
+  events:
+    - http:
+        path: /public/playground/client
+        method: GET
+        cors:
+          origin: '*'
+          allowCredentials: true
+          headers:
+            - Accept
+            - Content-Type
+            - Content-Length
+            - Authorization
+            - X-Amz-Date
+            - X-Api-Key
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent

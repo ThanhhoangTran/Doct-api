@@ -1,0 +1,19 @@
+Resource:
+  RDSInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: 'doctdb-instance'
+      AllocatedStorage: 20
+      DBInstanceClass: 'db.t3.micro'
+      Engine: 'postgres'
+      MasterUsername: ${ssm:/doct/db-username}
+      MasterUserPassword: ${ssm:/doct/db-password}
+      DBName: 'doct-db'
+      MultiAZ: false
+      StorageType: 'gp2'
+
+  DBInstanceEndpointOutput:
+    Type: 'AWS::CloudFormation::Output'
+    Value: !Sub 'postgres://${ssm:/doct/db-username}:${ssm:/doct/db-password}@${RDSInstance.Endpoint.Address}:5432/doct-db'
+    Export:
+      Name: '${self:service}-${self:provider.stage}.DB_URL'

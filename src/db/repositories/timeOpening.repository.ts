@@ -32,7 +32,7 @@ export class TimeOpeningRepository extends BaseRepository<TimeOpening> {
 
   public getOpeningByRangeTimeBuilder({ startTime, endTime, userId }: { startTime: Date; endTime: Date; userId: string }): SelectQueryBuilder<TimeOpening> {
     const builder = this.createQueryBuilder('TimeOpening')
-      .leftJoinAndSelect('TimeOpening.consultationSchedule', 'ConsultationSchedule')
+      .leftJoinAndSelect('TimeOpening.consultationSchedules', 'ConsultationSchedule')
       .where('TimeOpening.startOpening > :startTime', { startTime })
       .andWhere('TimeOpening.endOpening < :endTime', { endTime });
 

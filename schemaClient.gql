@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AvailableTimeResponse {
+  endTime: DateTime!
+  startTime: DateTime!
+}
+
 input BaseQueryFilterDto {
   filter: FilterDto
   pageNumber: Float = 1
@@ -64,6 +69,7 @@ enum QUERY_OPERATORS {
 type Query {
   getMe: GetMeResponse!
   getScheduleTimingEvents(queryParams: BaseQueryFilterDto!): TimeOpeningsResponse!
+  getTimeOpeningRangesAvailable(endDate: DateTime = "2024-09-22T14:45:52.101Z", filterByOpeningType: EVENT_TYPE, startDate: DateTime!): [TimeOpeningRangeAvailableResponse!]!
   signIn(input: SignInDto!): SignInResponse!
 }
 
@@ -104,6 +110,13 @@ input SignUpDto {
   password: String!
   phone: String!
   roleType: ROLE_NAME!
+}
+
+type TimeOpeningRangeAvailableResponse {
+  appointments: [AvailableTimeResponse!]
+  date: String!
+  meetings: [AvailableTimeResponse!]
+  operations: [AvailableTimeResponse!]
 }
 
 type TimeOpeningResponse {

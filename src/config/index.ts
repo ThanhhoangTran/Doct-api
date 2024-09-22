@@ -9,7 +9,7 @@ export const configuration = {
   sentryKey: process.env.SENTRY_DSN,
   redisUrl: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
   database: {
-    connectionString: process.env.DATABASE_URL || '',
+    connectionString: process.env.DB_URL || '',
     username: process.env.DATABASE_USER_NAME || '',
     password: process.env.DATABASE_PASSWORD || '',
     name: process.env.DATABASE_NAME || '',

@@ -81,7 +81,7 @@ export class TimeOpeningService {
     }
 
     return Object.keys(timeOpeningRangeAvailable).map(formattedDate => ({
-      date: new Date(formattedDate),
+      date: formattedDate,
       ...timeOpeningRangeAvailable[formattedDate],
     }));
   }

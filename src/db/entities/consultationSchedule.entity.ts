@@ -36,7 +36,7 @@ export class ConsultationSchedule extends CustomBaseEntity {
 
   @ManyToOne(_type => TimeOpening, opening => opening.consultationSchedules)
   @JoinColumn({
-    name: 'timeOpeningId',
+    name: 'time_opening_id',
   })
   timeOpening: TimeOpening;
 }
