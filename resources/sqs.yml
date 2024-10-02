@@ -1,4 +1,4 @@
-Resource:
+Resources:
   MessageQueue:
     Type: AWS::SQS:Queue
     Properties:
