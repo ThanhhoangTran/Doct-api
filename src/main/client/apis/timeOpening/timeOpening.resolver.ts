@@ -1,16 +1,16 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserContext } from '@/common/decorators/user.decorator';
-import { UserContextInterface } from '@/common/interface';
 import { TimeOpeningService } from './timeOpening.service';
 import { UpsertScheduleTimingEventInput } from './dtos/inputs/upsertScheduleTimingEventInput.dto';
-import { Roles } from '@/common/decorators/roles.decorator';
-import { ROLE_NAME } from '@/common/constants';
-import { Auth } from '@/common/decorators/auth.decorator';
-import { TimeOpeningResponse } from '@/common/dtos/responses/timingOpeningResponse.dto';
 import { TimeOpeningsResponse } from './dtos/response/timeOpeningsResponse';
-import { BaseQueryFilterDto } from '@/common/dtos/queryFilter.dto';
 import { TimeOpeningRangeAvailableResponse } from './dtos/response/timeOpeningAvailableResponse';
 import { GetTimeOpeningRangesAvailableInput } from './dtos/inputs/getTimeOpeningRangesAvailableInput.dto';
+import { Auth } from '../../../../common/decorators/auth.decorator';
+import { ROLE_NAME } from '../../../../common/constants';
+import { Roles } from '../../../../common/decorators/roles.decorator';
+import { TimeOpeningResponse } from '../../../../common/dtos/responses/timingOpeningResponse.dto';
+import { UserContext } from '../../../../common/decorators/user.decorator';
+import { BaseQueryFilterDto } from '../../../../common/dtos/queryFilter.dto';
+import { UserContextInterface } from '../../../../common/interface';
 
 @Auth(['Roles'])
 @Resolver()
@@ -31,7 +31,7 @@ export class TimeOpeningResolver {
   @Roles(ROLE_NAME.DOCTOR)
   @Query(_type => [TimeOpeningRangeAvailableResponse])
   async getTimeOpeningRangesAvailable(
-    @Args() input: GetTimeOpeningRangesAvailableInput,
+    @Args('input') input: GetTimeOpeningRangesAvailableInput,
     @UserContext() currentUser: UserContextInterface,
   ): Promise<TimeOpeningRangeAvailableResponse[] | undefined> {
     return this.timeOpeningService.getTimeOpeningRangesAvailable(input, currentUser);

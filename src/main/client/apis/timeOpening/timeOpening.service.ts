@@ -1,12 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UpsertScheduleTimingEventInput } from './dtos/inputs/upsertScheduleTimingEventInput.dto';
-import { UserContextInterface } from '@/common/interface';
-import { TimeOpeningRepository } from '@/db/repositories/timeOpening.repository';
 import { UserInputError } from '@nestjs/apollo';
-import { messageKey } from '@/i18n';
 import { TimeOpeningsResponse } from './dtos/response/timeOpeningsResponse';
-import { BaseQueryFilterDto } from '@/common/dtos/queryFilter.dto';
-import { BuilderPaginationResponse, notUndefined } from '@/common/utilFunction';
 import { ScheduleTimingEventValidatorImpl } from './helpers/implementations/scheduleTimingEventValidatorImpl';
 import { ScheduleTimingEventValidator } from './helpers/abstractions/scheduleTimingEventValidator';
 import { GetTimeOpeningRangesAvailableInput } from './dtos/inputs/getTimeOpeningRangesAvailableInput.dto';
@@ -14,7 +9,11 @@ import { TimeOpeningRangeAvailableResponse } from './dtos/response/timeOpeningAv
 import dayjs from 'dayjs';
 import { GetAvailableTimeOpeningHelperImpl } from './helpers/implementations/getAvailableTimeOpeningHelperImpl';
 import { GetAvailableTimeOpeningHelper } from './helpers/abstractions/getAvailableTimeOpeningHelper';
-
+import { TimeOpeningRepository } from '../../../../db/repositories/timeOpening.repository';
+import { UserContextInterface } from '../../../../common/interface';
+import { BuilderPaginationResponse, notUndefined } from '../../../../common/utilFunction';
+import { BaseQueryFilterDto } from '../../../../common/dtos/queryFilter.dto';
+import { ErrorMessage } from '../../../../i18n';
 @Injectable()
 export class TimeOpeningService {
   public constructor(
@@ -27,7 +26,7 @@ export class TimeOpeningService {
     const { id, ...rest } = input;
     const existingTimeOpening = id ? await this.timeOpeningRepo.findOne({ where: { id } }) : undefined;
     if (id && !existingTimeOpening) {
-      throw new UserInputError(messageKey.TIME_OPENING.TIME_OPENING_NOT_FOUND);
+      throw new UserInputError(ErrorMessage.TIME_OPENING.TIME_OPENING_NOT_FOUND);
     }
 
     await this.scheduleTimingEventValidator.validateOverlapTimingEvent({
@@ -50,7 +49,7 @@ export class TimeOpeningService {
     const { startDate, endDate, filterByOpeningType } = input;
 
     if (dayjs(startDate).isAfter(endDate)) {
-      throw new UserInputError(messageKey.TIME_OPENING.INVALID_DATE_RANGE);
+      throw new UserInputError(ErrorMessage.TIME_OPENING.INVALID_DATE_RANGE);
     }
 
     const openingRangeTimeBuilder = this.timeOpeningRepo.getOpeningByRangeTimeBuilder({ startTime: startDate, endTime: endDate, userId: currentUser.id });

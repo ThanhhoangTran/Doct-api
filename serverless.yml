@@ -7,9 +7,14 @@ custom:
   s3BucketName: ${self:custom.baseName}-s3-bucket
   sqs: ${self:custom.baseName}-message-queue
   sqs-dlq: ${self:custom.baseName}-message-dead-letter-queue
+
   webpack:
-    webpackConfig: 'webpack.config.ts'
+    webpackConfig: 'webpack.config.js'
+    includeModules:
+      forceInclude:
+        - pg
     packager: 'yarn'
+
   prune:
     automatic: true
     includeLayers: true
@@ -47,14 +52,10 @@ provider:
         - { Fn::GetAtt: [MessageQueue, Arn] }
         - { Fn::GetAtt: [DeadLetterQueue, Arn] }
 
-build:
-  esbuild: false
-
 plugins:
+  - serverless-webpack
   - serverless-prune-plugin
   - serverless-offline
-  - serverless-pseudo-parameters
-  - serverless-plugin-scripts
 
 functions:
   - ${file(./resources/lambdas/clientServer.yml)}

@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@ObjectType({ isAbstract: true })
+@ObjectType()
 @Entity('token')
 export class Token extends BaseEntity {
   @Field(_type => ID)

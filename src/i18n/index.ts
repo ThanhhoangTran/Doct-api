@@ -1,13 +1,10 @@
-/* eslint-disable */
-// import * as _en from './en/translate.json';
-// import * as _fr from './fr/translate.json';
-
-export const messageKey = {
-  UNAUTHORIZED: 'UNAUTHORIZED',
+export const ErrorMessage = {
+  UNAUTHORIZED: "You don't have permission for this action",
+  INVALID_DATE_RANGE: 'Date range is invalid',
   TIME_OPENING: {
-    TIME_OPENING_NOT_FOUND: 'TIME_OPENING_NOT_FOUND',
-    START_OPENING_CANNOT_GREATER_THAN_END_OPENING: 'START_OPENING_CANNOT_GREATER_THAN_END_OPENING',
-    OVERLAPS_TIME_OPENING: 'OVERLAPS_TIME_OPENING',
-    INVALID_DATE_RANGE: 'INVALID_DATE_RANGE',
+    TIME_OPENING_NOT_FOUND: 'Time Opening not found!',
+    INVALID_DATE_RANGE: 'Date range is invalid',
+    START_OPENING_CANNOT_GREATER_THAN_END_OPENING: 'Start opening time must be less than end opening time',
+    OVERLAPS_TIME_OPENING: 'Overlaps time opening, please choose another range time',
   },
 };

@@ -1,6 +1,6 @@
 Resources:
   MessageQueue:
-    Type: AWS::SQS:Queue
+    Type: AWS::SQS::Queue
     Properties:
       QueueName: ${self:custom.sqs}
       VisibilityTimeout: 300 # 5mins

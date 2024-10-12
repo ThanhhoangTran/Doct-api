@@ -1,5 +1,5 @@
-import { UserResponse } from '@/common/dtos/responses/userResponse.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { UserResponse } from '../../../../common/dtos/responses/userResponse.dto';
 
 @ObjectType()
 export class GetMeResponse extends UserResponse {

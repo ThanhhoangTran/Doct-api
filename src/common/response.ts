@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
+@ObjectType({ isAbstract: true })
 export class CustomResponseFields {
   @Field(() => Date)
   createdAt: Date;
@@ -9,7 +9,7 @@ export class CustomResponseFields {
   updatedAt: Date;
 }
 
-@ObjectType()
+@ObjectType({ isAbstract: true })
 export class MetaPaginationInterface {
   @Field(_type => Int)
   totalItems: number;

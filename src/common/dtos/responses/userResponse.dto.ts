@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { RoleResponse } from './roleResponse.dto';
 
-@ObjectType()
+@ObjectType({ isAbstract: true })
 export class UserResponse {
   @Field(_type => ID)
   id: string;

@@ -1,4 +1,3 @@
-import { AppModule } from '@/main/app.module';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { APIGatewayProxyHandler, Context } from 'aws-lambda';
@@ -6,6 +5,7 @@ import { createServer, proxy } from 'aws-serverless-express';
 import { eventContext } from 'aws-serverless-express/middleware';
 import express from 'express';
 import { Server } from 'http';
+import { ClientModule } from '../main/client/client.module';
 
 let cachedServer: Server;
 let binaryMineTypes: string[] = [];
@@ -15,7 +15,7 @@ const bootstrapServer = async (): Promise<Server> => {
     try {
       const expressApp = express();
       const adapter = new ExpressAdapter(expressApp);
-      const nestApp = await NestFactory.create(AppModule, adapter, {
+      const nestApp = await NestFactory.create(ClientModule, adapter, {
         logger: ['verbose', 'debug', 'warn', 'error'],
       });
       nestApp.use(eventContext());
@@ -32,5 +32,8 @@ export const handler: APIGatewayProxyHandler = async (event: any, context: Conte
   try {
     cachedServer = await bootstrapServer();
     return proxy(cachedServer, event as any, context, 'PROMISE').promise;
-  } catch (error) {}
+  } catch (error) {
+    console.log('🚀 ~ consthandler:APIGatewayProxyHandler= ~ error:', error);
+    throw error;
+  }
 };

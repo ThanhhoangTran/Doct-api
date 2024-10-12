@@ -1,5 +1,5 @@
-import { configuration } from '@/config';
 import * as bcryptjs from 'bcryptjs';
+import { configuration } from '../config';
 
 export class PasswordUtil {
   static async generateHash(password: string): Promise<string> {

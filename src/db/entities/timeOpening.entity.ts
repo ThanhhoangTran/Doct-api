@@ -1,7 +1,6 @@
-import { CustomBaseEntity } from '@/common/baseEntity';
-import { EVENT_TYPE } from '@/common/constants';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ConsultationSchedule } from './consultationSchedule.entity';
+import { CustomBaseEntity } from '../../common/baseEntity';
 
 @Entity({
   name: 'time_opening',
@@ -16,7 +15,7 @@ export class TimeOpening extends CustomBaseEntity {
   @Column({ type: 'timestamp with time zone', nullable: true })
   endOpening: Date;
 
-  @Column({ type: 'enum', enum: EVENT_TYPE })
+  @Column({ type: 'varchar' })
   event: string;
 
   @Column({ type: 'uuid' })

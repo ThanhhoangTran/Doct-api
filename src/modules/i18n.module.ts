@@ -3,7 +3,7 @@ import path from 'path';
 import { I18nModule, I18nJsonParser } from 'nestjs-i18n';
 import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
-import { HttpExceptionFilter } from '@/service/i18n';
+import { HttpExceptionFilter } from '../service/i18n';
 
 @Module({
   imports: [

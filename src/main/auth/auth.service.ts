@@ -1,19 +1,19 @@
-import { Role } from '@/db/entities/role.entity';
-import { UserRepository } from '@/db/repositories/user.repository';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { SignUpDto } from './dtos/inputs/signUp.dto';
-import { PasswordUtil } from '@/common/passwordUtil';
 import { SignInDto } from './dtos/inputs/signIn.dto';
 import { UserInputError } from '@nestjs/apollo';
 import { DataSource, EntityManager } from 'typeorm';
-import { User } from '@/db/entities/user.entity';
 import { pick } from 'lodash';
-import { Jwt } from '@/service/jwt/jwt';
-import { Token } from '@/db/entities/token.entity';
-import { RoleRepository } from '@/db/repositories/role.repository';
-import { ROLE_NAME, SELECT_USER } from '@/common/constants';
 import { SignInResponse } from './dtos/response/signInResponse';
 import { GetMeResponse } from './dtos/response/getMeResponse';
+import { UserRepository } from '../../db/repositories/user.repository';
+import { RoleRepository } from '../../db/repositories/role.repository';
+import { Role } from '../../db/entities/role.entity';
+import { ROLE_NAME, SELECT_USER } from '../../common/constants';
+import { PasswordUtil } from '../../common/passwordUtil';
+import { User } from '../../db/entities/user.entity';
+import { Jwt } from '../../service/jwt/jwt';
+import { Token } from '../../db/entities/token.entity';
 
 @Injectable()
 export class AuthService {

@@ -9,8 +9,8 @@ export class FilterDto {
   @Field(_type => String)
   data: string;
 
-  @Field(_type => QUERY_OPERATORS)
-  operator: String;
+  @Field(_type => String, { defaultValue: QUERY_OPERATORS.EQUAL })
+  operator: string;
 }
 
 @InputType()

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { GetAvailableTimeOpeningHelper } from '../abstractions/getAvailableTimeOpeningHelper';
-import { TimeOpening } from '@/db/entities/timeOpening.entity';
 import dayjs from 'dayjs';
-import { EVENT_TYPE } from '@/common/constants';
+import { TimeOpening } from '../../../../../../db/entities/timeOpening.entity';
+import { EVENT_TYPE } from '../../../../../../common/constants';
 
 @Injectable()
 export class GetAvailableTimeOpeningHelperImpl implements GetAvailableTimeOpeningHelper {

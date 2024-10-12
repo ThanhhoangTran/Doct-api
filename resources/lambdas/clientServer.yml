@@ -1,13 +1,13 @@
 clientServer:
   handler: src/handlers/clientServer.handler
-  maximumRetryAttempts: 1
+  maximumRetryAttempts: 2
   events:
     - http:
-        path: /public/playground/client
-        method: GET
+        path: /client
+        method: any
         cors:
           origin: '*'
-          allowCredentials: true
+          allowCredentials: false
           headers:
             - Accept
             - Content-Type

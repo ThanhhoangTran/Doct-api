@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ScheduleTimingEventValidator } from '../abstractions/scheduleTimingEventValidator';
 import { UserInputError } from '@nestjs/apollo';
-import { messageKey } from '@/i18n';
-import { TimeOpeningRepository } from '@/db/repositories/timeOpening.repository';
+import { TimeOpeningRepository } from '../../../../../../db/repositories/timeOpening.repository';
+import { ErrorMessage } from '../../../../../../i18n';
 
 @Injectable()
 export class ScheduleTimingEventValidatorImpl implements ScheduleTimingEventValidator {
@@ -20,12 +20,12 @@ export class ScheduleTimingEventValidatorImpl implements ScheduleTimingEventVali
     excludeTimeOpeningIds?: string[];
   }): Promise<void> {
     if (startTime >= endTime) {
-      throw new UserInputError(messageKey.TIME_OPENING.START_OPENING_CANNOT_GREATER_THAN_END_OPENING);
+      throw new UserInputError(ErrorMessage.TIME_OPENING.START_OPENING_CANNOT_GREATER_THAN_END_OPENING);
     }
 
     const isOverlapSchedule = await this.timeOpeningRepo.isOverlapSchedule({ userId, startOpening: startTime, endOpening: endTime, excludeTimeOpeningIds });
     if (isOverlapSchedule) {
-      throw new UserInputError(messageKey.TIME_OPENING.OVERLAPS_TIME_OPENING);
+      throw new UserInputError(ErrorMessage.TIME_OPENING.OVERLAPS_TIME_OPENING);
     }
   }
 }

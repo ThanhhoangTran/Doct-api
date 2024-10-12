@@ -1,4 +1,3 @@
-import { EVENT_TYPE } from '@/common/constants';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -12,7 +11,7 @@ export class TimeOpeningResponse {
   @Field(_type => Date)
   endOpening: string;
 
-  @Field(_type => EVENT_TYPE)
+  @Field(_type => String)
   event: string;
 
   @Field(_type => ID)

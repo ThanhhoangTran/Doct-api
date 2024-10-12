@@ -1,7 +1,6 @@
-import { CustomBaseEntity } from '@/common/baseEntity';
-import { CONSULTATION_STATUS, CONSULTATION_TYPE } from '@/common/constants';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TimeOpening } from './timeOpening.entity';
+import { CustomBaseEntity } from '../../common/baseEntity';
 
 @Entity({
   name: 'consultation_schedule',
@@ -16,7 +15,7 @@ export class ConsultationSchedule extends CustomBaseEntity {
   @Column({ type: 'timestamp with time zone', nullable: true })
   endTime: Date;
 
-  @Column({ type: 'enum', enum: CONSULTATION_TYPE })
+  @Column({ type: 'varchar' })
   consultationType: string;
 
   @Column({ type: 'uuid' })
@@ -31,7 +30,7 @@ export class ConsultationSchedule extends CustomBaseEntity {
   @Column({ type: 'varchar', length: 100 })
   userId: string;
 
-  @Column({ type: 'enum', enum: CONSULTATION_STATUS })
+  @Column({ type: 'varchar' })
   status: string;
 
   @ManyToOne(_type => TimeOpening, opening => opening.consultationSchedules)
