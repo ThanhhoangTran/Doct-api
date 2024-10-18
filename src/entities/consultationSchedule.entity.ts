@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TimeOpening } from './timeOpening.entity';
-import { CustomBaseEntity } from '../../common/baseEntity';
+import { CustomBaseEntity } from '../common/baseEntity';
 
 @Entity({
   name: 'consultation_schedule',

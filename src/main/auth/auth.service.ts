@@ -6,14 +6,14 @@ import { DataSource, EntityManager } from 'typeorm';
 import { pick } from 'lodash';
 import { SignInResponse } from './dtos/response/signInResponse';
 import { GetMeResponse } from './dtos/response/getMeResponse';
-import { UserRepository } from '../../db/repositories/user.repository';
-import { RoleRepository } from '../../db/repositories/role.repository';
-import { Role } from '../../db/entities/role.entity';
+import { UserRepository } from '../../repositories/user.repository';
+import { RoleRepository } from '../../repositories/role.repository';
+import { Role } from '../../entities/role.entity';
 import { ROLE_NAME, SELECT_USER } from '../../common/constants';
 import { PasswordUtil } from '../../common/passwordUtil';
-import { User } from '../../db/entities/user.entity';
+import { User } from '../../entities/user.entity';
 import { Jwt } from '../../service/jwt/jwt';
-import { Token } from '../../db/entities/token.entity';
+import { Token } from '../../entities/token.entity';
 
 @Injectable()
 export class AuthService {
@@ -64,6 +64,7 @@ export class AuthService {
 
   public async signIn(input: SignInDto): Promise<SignInResponse> {
     const { email, password } = input;
+
     const user = await this.userRepository.createQueryBuilder('User').leftJoinAndSelect('User.role', 'Role').where({ email }).addSelect('User.password').getOne();
     if (!user) {
       throw new UserInputError('Cannot find your email');

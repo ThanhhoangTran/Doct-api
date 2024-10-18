@@ -1,7 +1,7 @@
 import { TimeOpening } from '../entities/timeOpening.entity';
 import { Injectable } from '@nestjs/common';
 import { DataSource, SelectQueryBuilder } from 'typeorm';
-import { BaseRepository } from '../../common/baseRepository';
+import { BaseRepository } from '../common/baseRepository';
 
 @Injectable()
 export class TimeOpeningRepository extends BaseRepository<TimeOpening> {

@@ -21,7 +21,7 @@ export const loadEntitiesAndMigrations = () => {
         })
         .flat();
 
-    const entitiesViaWebpack: NonNullable<EntitiesAndMigrationsOpts['entities']> = importAllFunctions(require.context('./entities/', true, /\.ts$/));
+    const entitiesViaWebpack: NonNullable<EntitiesAndMigrationsOpts['entities']> = importAllFunctions(require.context('./../src/entities/', true, /\.ts$/));
     // const subscribersViaWebpack: NonNullable<EntitiesAndMigrationsOpts['subscribers']> = importAllFunctions(
     //   require.context('./subscribers/', true, /\.ts$/)
     // );

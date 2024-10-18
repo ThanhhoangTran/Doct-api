@@ -9,7 +9,7 @@ import { TimeOpeningRangeAvailableResponse } from './dtos/response/timeOpeningAv
 import dayjs from 'dayjs';
 import { GetAvailableTimeOpeningHelperImpl } from './helpers/implementations/getAvailableTimeOpeningHelperImpl';
 import { GetAvailableTimeOpeningHelper } from './helpers/abstractions/getAvailableTimeOpeningHelper';
-import { TimeOpeningRepository } from '../../../../db/repositories/timeOpening.repository';
+import { TimeOpeningRepository } from '../../../../repositories/timeOpening.repository';
 import { UserContextInterface } from '../../../../common/interface';
 import { BuilderPaginationResponse, notUndefined } from '../../../../common/utilFunction';
 import { BaseQueryFilterDto } from '../../../../common/dtos/queryFilter.dto';

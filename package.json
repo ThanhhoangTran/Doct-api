@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "npx kill-port 3002 && clear && serverless offline",
+    "dev": "IS_OFFLINE=true sls offline start",
     "build": "rm -rf dist && yarn webpack",
     "start": "node --enable-source-maps .webpack/main.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

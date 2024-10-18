@@ -31,9 +31,10 @@ const bootstrapServer = async (): Promise<Server> => {
 export const handler: APIGatewayProxyHandler = async (event: any, context: Context) => {
   try {
     cachedServer = await bootstrapServer();
+
     return proxy(cachedServer, event as any, context, 'PROMISE').promise;
   } catch (error) {
-    console.log('🚀 ~ consthandler:APIGatewayProxyHandler= ~ error:', error);
+    console.log('🚀 APIGatewayProxyHandler= ~ error:', error);
     throw error;
   }
 };

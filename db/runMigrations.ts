@@ -1,5 +1,5 @@
-import { executeCommandLine } from '../common/utilFunction';
-import { configuration } from '../config';
+import { executeCommandLine } from '../src/common/utilFunction';
+import { configuration } from '../src/config';
 import { ConnectToDb } from './connectToDb';
 
 export const runMigrations = async () => {
@@ -11,7 +11,7 @@ export const runMigrations = async () => {
 const main = async () => {
   const nodeEnv = process.argv[3] ? process.argv[3] : configuration.api.nodeEnv;
   if (process.argv[2] === 'create') {
-    return executeCommandLine(`yarn typeorm migration:create src/db/migrations/${process.argv[3]}`);
+    return executeCommandLine(`yarn typeorm migration:create db/migrations/${process.argv[3]}`);
   }
 
   const connectToDb = new ConnectToDb();

@@ -1,8 +1,7 @@
 {
   "ts-node": {
     "compilerOptions": {
-      "module": "commonjs",
-      "baseUrl": "./src/*"
+      "module": "commonjs"
     }
   },
   "compilerOptions": {
@@ -19,8 +18,7 @@
     "target": "es6",
     "lib": ["ES2019"],
     "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./src/*"
+    "outDir": "./dist"
   },
   "exclude": ["node_modules"]
 }

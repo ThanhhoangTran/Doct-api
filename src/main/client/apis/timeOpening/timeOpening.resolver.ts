@@ -11,9 +11,10 @@ import { TimeOpeningResponse } from '../../../../common/dtos/responses/timingOpe
 import { UserContext } from '../../../../common/decorators/user.decorator';
 import { BaseQueryFilterDto } from '../../../../common/dtos/queryFilter.dto';
 import { UserContextInterface } from '../../../../common/interface';
+import { TimeOpening } from '../../../../entities/timeOpening.entity';
 
 @Auth(['Roles'])
-@Resolver()
+@Resolver(() => TimeOpening)
 export class TimeOpeningResolver {
   constructor(private readonly timeOpeningService: TimeOpeningService) {}
 

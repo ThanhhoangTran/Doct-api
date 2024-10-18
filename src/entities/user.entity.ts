@@ -1,7 +1,7 @@
 import { AfterLoad, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Role } from './role.entity';
-import { CustomBaseEntity } from '../../common/baseEntity';
+import { CustomBaseEntity } from '../common/baseEntity';
 
 @ObjectType({ isAbstract: true })
 @Entity({ name: 'user' })

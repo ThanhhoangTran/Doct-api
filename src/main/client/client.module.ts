@@ -20,7 +20,7 @@ import { JwtStrategy } from '../../service/jwt/strategies/jwt.strategy';
       driver: ApolloDriver,
       path: '/',
       playground: true,
-      autoSchemaFile: join(process.cwd(), 'schemaClient.gql'),
+      autoSchemaFile: '../../tmp/schemaClient.gql',
       sortSchema: true,
       include: [AuthModule, TimeOpeningModule],
     }),

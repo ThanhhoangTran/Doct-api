@@ -8,13 +8,14 @@ import { UserResponse } from '../../common/dtos/responses/userResponse.dto';
 import { Auth } from '../../common/decorators/auth.decorator';
 import { UserContext } from '../../common/decorators/user.decorator';
 import { UserContextInterface } from '../../common/interface';
-@Resolver()
+import { User } from '../../entities/user.entity';
+import { join } from 'path';
+@Resolver(() => User)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @Query(_type => SignInResponse)
   async signIn(@Args('input') input: SignInDto): Promise<SignInResponse> {
-    console.log('🚀 ~ AuthResolver ~ signIn ~ input:', input);
     return await this.authService.signIn(input);
   }
 

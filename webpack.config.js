@@ -1,5 +1,5 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const path = require('path');
 const slsw = require('serverless-webpack');
 const nodeExternals = require('webpack-node-externals');
@@ -11,9 +11,8 @@ module.exports = {
   devtool: slsw.lib.webpack.isLocal ? 'eval-source-map' : 'source-map',
   entry: slsw.lib.entries,
   resolve: {
-    symlinks: false,
     cacheWithContext: false,
-    extensions: ['.tsx', '.ts', '.js', '.json'],
+    extensions: ['.mjs', '.json', '.ts'],
   },
   output: {
     libraryTarget: 'commonjs',
@@ -23,7 +22,7 @@ module.exports = {
   target: 'node',
   externals: [nodeExternals()],
   optimization: {
-    minimize: true,
+    minimize: false,
   },
   module: {
     rules: [
@@ -32,7 +31,6 @@ module.exports = {
         exclude: [[path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, '.serverless'), path.resolve(__dirname, '.webpack')]],
         loader: 'ts-loader',
         options: {
-          configFile: 'tsconfig.build.json',
           transpileOnly: true,
           experimentalWatchApi: true,
         },
@@ -44,6 +42,11 @@ module.exports = {
       'process.env.WEBPACK_RUNNER': JSON.stringify(true),
     }),
     new CleanWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        configFile: 'tsconfig.build.json',
+      },
+    }),
   ],
   stats: 'errors-only',
 };

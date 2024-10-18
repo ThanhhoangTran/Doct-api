@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { GetAvailableTimeOpeningHelper } from '../abstractions/getAvailableTimeOpeningHelper';
 import dayjs from 'dayjs';
-import { TimeOpening } from '../../../../../../db/entities/timeOpening.entity';
+import { TimeOpening } from '../../../../../../entities/timeOpening.entity';
 import { EVENT_TYPE } from '../../../../../../common/constants';
 
 @Injectable()

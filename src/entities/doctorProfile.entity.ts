@@ -1,6 +1,6 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { CustomBaseEntity } from '../../common/baseEntity';
+import { CustomBaseEntity } from '../common/baseEntity';
 
 @ObjectType()
 @Entity({
