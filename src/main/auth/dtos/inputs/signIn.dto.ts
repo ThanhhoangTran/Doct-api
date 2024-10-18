@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-@InputType('SignInDto', { isAbstract: true })
+@InputType()
 export class SignInDto {
   @Field(() => String)
   email: string;

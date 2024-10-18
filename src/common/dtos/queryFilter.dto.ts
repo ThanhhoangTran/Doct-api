@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { QUERY_OPERATORS } from '../constants';
 
-@InputType('FilterDto', { isAbstract: true })
+@InputType()
 export class FilterDto {
   @Field(_type => String)
   field: string;
@@ -13,7 +13,7 @@ export class FilterDto {
   operator: string;
 }
 
-@InputType('BaseQueryFilterDto', { isAbstract: true })
+@InputType()
 export class BaseQueryFilterDto {
   @Field(_type => Number, { defaultValue: 10, nullable: true })
   pageSize?: number = 10;

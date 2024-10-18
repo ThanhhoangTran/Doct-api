@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail, MinLength } from 'class-validator';
 import { Match } from '../../../../common/decorators/match.decorator';
 
-@InputType('SignUpDto', { isAbstract: true })
+@InputType()
 export class SignUpDto {
   @Field(() => String)
   firstName: string;

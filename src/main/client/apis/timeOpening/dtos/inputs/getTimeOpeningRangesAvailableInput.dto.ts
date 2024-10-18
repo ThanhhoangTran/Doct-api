@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-@InputType('GetTimeOpeningRangesAvailableInput', { isAbstract: true })
+@InputType()
 export class GetTimeOpeningRangesAvailableInput {
   @Field(_type => Date)
   startDate: Date;
