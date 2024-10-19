@@ -14,15 +14,17 @@ export const ormconfig = async (hardCodeEnv?: string) => {
       idleTimeoutMillis: 10000,
       connectionTimeoutMillis: 10000,
     },
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    // ssl: {
+    //   rejectUnauthorized: false,
+    // },
   };
 
   typeOrmConfig = {
     ...typeOrmConfig,
     url: configuration.database.connectionString,
   };
+
+  console.log(typeOrmConfig);
 
   return typeOrmConfig;
 };

@@ -9,9 +9,6 @@ export const configuration = {
   redisUrl: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
   database: {
     connectionString: process.env.DB_URL || '',
-    // username: process.env.DATABASE_USER_NAME || '',
-    // password: process.env.DATABASE_PASSWORD || '',
-    // name: process.env.DATABASE_NAME || '',
   },
   jwt: {
     secretKey: process.env.JWT_SECRET || 'doctapi@123',
