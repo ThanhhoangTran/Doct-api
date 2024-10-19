@@ -7,7 +7,6 @@ import { ormconfig } from '../../db/ormconfig';
     TypeOrmModule.forRootAsync({
       useFactory: async () => {
         const dbConfig = await ormconfig();
-        // console.log(dbConfig.url);
         return {
           ...dbConfig,
           keepConnectionAlive: true,

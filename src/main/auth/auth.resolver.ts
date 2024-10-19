@@ -9,7 +9,6 @@ import { Auth } from '../../common/decorators/auth.decorator';
 import { UserContext } from '../../common/decorators/user.decorator';
 import { UserContextInterface } from '../../common/interface';
 import { User } from '../../entities/user.entity';
-import { join } from 'path';
 @Resolver(() => User)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}

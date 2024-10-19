@@ -22,14 +22,10 @@ export const loadEntitiesAndMigrations = () => {
         .flat();
 
     const entitiesViaWebpack: NonNullable<EntitiesAndMigrationsOpts['entities']> = importAllFunctions(require.context('./../src/entities/', true, /\.ts$/));
-    // const subscribersViaWebpack: NonNullable<EntitiesAndMigrationsOpts['subscribers']> = importAllFunctions(
-    //   require.context('./subscribers/', true, /\.ts$/)
-    // );
     const migrationsViaWebpack: NonNullable<EntitiesAndMigrationsOpts['migrations']> = importAllFunctions(require.context('./migrations/', true, /\.ts$/));
 
     return {
       entities: entitiesViaWebpack,
-      // subscribers: subscribersViaWebpack,
       migrations: migrationsViaWebpack,
     };
   }

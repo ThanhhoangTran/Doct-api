@@ -3,7 +3,7 @@ service: doct-api-dev
 custom:
   serverless-offline:
     useChildProcesses: true
-  baseName: ${param:baseName, 'doct-api-dev'}
+  baseName: ${env:BASE_NAME, 'doct-api-dev'}
   s3BucketName: ${self:custom.baseName}-s3-bucket
   sqs: ${self:custom.baseName}-message-queue
   sqs-dlq: ${self:custom.baseName}-message-dead-letter-queue
@@ -23,6 +23,8 @@ custom:
 package:
   individually: true
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -34,7 +36,7 @@ provider:
     APP_ENV: ${opt:stage, 'dev'}
     REGION: ${opt:region, 'ap-southeast-1'}
     MAIN_QUEUE_URL: { Ref: MessageQueue }
-    DB_URL: ${param:DB_URL}
+    DB_URL: ${env:DB_URL}
 
   apiGateway:
     shouldStartNameWithService: true
@@ -56,6 +58,7 @@ plugins:
   - serverless-webpack
   - serverless-prune-plugin
   - serverless-offline
+  - serverless-dotenv-plugin
 
 functions:
   - ${file(./resources/lambdas/clientServer.yml)}
