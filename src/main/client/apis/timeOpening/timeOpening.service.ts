@@ -14,7 +14,6 @@ import { BuilderPaginationResponse, notUndefined } from '../../../../utils/utilF
 import { PaginationDto } from '../../../../common/dtos/queryFilter.dto';
 import { ErrorMessage } from '../../../../i18n';
 import { GetPagingTimeOpeningResponse } from './dtos/responses/getPagingTimeOpeningResponse';
-import { start } from 'repl';
 @Injectable()
 export class TimeOpeningService {
   public constructor(

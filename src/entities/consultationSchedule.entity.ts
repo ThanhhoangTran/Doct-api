@@ -4,6 +4,7 @@ import { CustomBaseEntity } from '../common/baseEntity';
 import { User } from './user.entity';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { CONSULTATION_STATUS, CONSULTATION_TYPE } from '../common/constants';
+import { PatientInfoDto } from '../common/dtos/responses/patientInfoResponse.dto';
 
 @Entity({
   name: 'consultation_schedule',
@@ -30,8 +31,9 @@ export class ConsultationSchedule extends CustomBaseEntity {
   @Column({ type: 'uuid' })
   timeOpeningId: string;
 
+  @Field(_type => PatientInfoDto, { nullable: true })
   @Column({ type: 'jsonb', nullable: true })
-  patientInfo: string;
+  patientInfo: PatientInfoDto;
 
   @Field(_type => String, { nullable: true })
   @Column({ type: 'varchar', length: 100, nullable: true })

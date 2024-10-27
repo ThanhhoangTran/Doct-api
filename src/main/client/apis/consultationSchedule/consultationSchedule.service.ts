@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { GetPagingConsultationScheduleResponse } from './dtos/responses/getPagingConsultationScheduleResponses';
-import { UserContextInterface } from '../../../../common/interface';
+import { Getter, UserContextInterface } from '../../../../common/interface';
 import { ConsultationScheduleRepository } from '../../../../repositories/consultationSchedule.repository';
 import { BuilderPaginationResponse } from '../../../../utils/utilFunction';
 import { CONSULTATION_STATUS, EVENT_TYPE, ROLE_NAME } from '../../../../common/constants';
@@ -11,21 +11,34 @@ import { TimeOpeningRepository } from '../../../../repositories/timeOpening.repo
 import dayjs from 'dayjs';
 import { UserInputError } from '@nestjs/apollo';
 import { ConsultationSchedule } from '../../../../entities/consultationSchedule.entity';
+import { GetPagingConsultationScheduleFilter } from './dtos/inputs/getPagingConsultationScheduleInput.dto';
+import { ConsultationScheduleFilterImpl } from './helpers/implementations/consultationScheduleFilterImpl';
+import { ConsultationScheduleFilterType } from './types/consultationScheduleFilterType';
 
 @Injectable()
 export class ConsultationScheduleService {
   public constructor(
     private readonly _consultationScheduleRepo: ConsultationScheduleRepository,
     private readonly _timeOpeningRepo: TimeOpeningRepository,
+    @Inject(ConsultationScheduleFilterImpl) private readonly _consultationScheduleFilterGetter: Getter<ConsultationScheduleFilterType>,
   ) {}
 
-  public async getPagingConsultationSchedules(pagination: PaginationDto, user: UserContextInterface): Promise<GetPagingConsultationScheduleResponse> {
+  public async getPagingConsultationSchedules(
+    pagination: PaginationDto,
+    user: UserContextInterface,
+    filter: GetPagingConsultationScheduleFilter,
+  ): Promise<GetPagingConsultationScheduleResponse> {
     const { role, id } = user;
     const builder = this._consultationScheduleRepo.createQueryBuilder('ConsultationSchedule').leftJoin('ConsultationSchedule.patient', 'Patient');
 
     if (role.name === ROLE_NAME.DOCTOR) {
       builder.innerJoin('ConsultationSchedule.timeOpening', 'TimeOpening').where('TimeOpening.userId = :doctorId');
     }
+
+    this._consultationScheduleFilterGetter.execute({
+      builder,
+      ...filter,
+    });
 
     builder.setParameters({
       doctorId: id,
@@ -35,7 +48,7 @@ export class ConsultationScheduleService {
   }
 
   public async upsertConsultationSchedule(input: UpsertConsultationScheduleInput, currentUser: UserContextInterface): Promise<string> {
-    const { id, timeOpeningId, startTime, endTime, ...rest } = input;
+    const { id, timeOpeningId, startTime, endTime, patientInfo, ...rest } = input;
     const consultationSchedule = await this._consultationScheduleRepo.getOneByCondition({
       condition: {
         id,
@@ -61,7 +74,7 @@ export class ConsultationScheduleService {
       throw new UserInputError(`Consultation period must between ${timeOpening.startOpening.toISOString()} and ${timeOpening.endOpening.toISOString()}`);
     }
 
-    //validate a timeOpening have mutiple consultation, validate all time in timeOpening
+    //validate a timeOpening have multiple consultation, validate all time in timeOpening
 
     return await new CustomDataSourceManager().initialTransaction(async trx => {
       if (consultationSchedule) {
@@ -71,6 +84,7 @@ export class ConsultationScheduleService {
             timeOpeningId,
             startTime,
             endTime,
+            patientInfo: patientInfo,
             ...rest,
           },
           trx,
@@ -80,6 +94,7 @@ export class ConsultationScheduleService {
           ConsultationSchedule.create({
             ...input,
             status: CONSULTATION_STATUS.WAITING,
+            patientInfo: patientInfo,
           }),
         );
       }

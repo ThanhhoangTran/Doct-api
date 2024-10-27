@@ -1,5 +1,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { CONSULTATION_STATUS, CONSULTATION_TYPE } from '../../../../../../common/constants';
+import { PatientInfoJson } from '../../../../../../common/dtos/requests/patientInfoJson.dto';
+import GraphQLJSON from 'graphql-type-json';
 
 @InputType()
 export class UpsertConsultationScheduleInput {
@@ -17,6 +19,9 @@ export class UpsertConsultationScheduleInput {
 
   @Field(_type => ID)
   timeOpeningId: string;
+
+  @Field(_type => PatientInfoJson)
+  patientInfo: PatientInfoJson;
 
   @Field(_type => ID, { nullable: true })
   patientId: string;

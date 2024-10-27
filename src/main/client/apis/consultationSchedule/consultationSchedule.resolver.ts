@@ -7,8 +7,8 @@ import { Roles } from '../../../../common/decorators/roles.decorator';
 import { Auth } from '../../../../common/decorators/auth.decorator';
 import { ROLE_NAME } from '../../../../common/constants';
 import { PaginationDto } from '../../../../common/dtos/queryFilter.dto';
-import { ConsultationSchedule } from '../../../../entities/consultationSchedule.entity';
 import { UpsertConsultationScheduleInput } from './dtos/inputs/upsertConsultationScheduleInput.dto';
+import { GetPagingConsultationScheduleFilter } from './dtos/inputs/getPagingConsultationScheduleInput.dto';
 
 @Auth(['Roles'])
 @Resolver()
@@ -19,9 +19,10 @@ export class ConsultationScheduleResolver {
   @Query(_type => GetPagingConsultationScheduleResponse)
   public async getPagingConsultationSchedules(
     @Args('pagination') pagination: PaginationDto,
+    @Args('filter', { nullable: true }) filter: GetPagingConsultationScheduleFilter | null,
     @UserContext() user: UserContextInterface,
   ): Promise<GetPagingConsultationScheduleResponse> {
-    return await this._consultationScheduleService.getPagingConsultationSchedules(pagination, user);
+    return await this._consultationScheduleService.getPagingConsultationSchedules(pagination, user, filter);
   }
 
   @Roles(ROLE_NAME.DOCTOR)

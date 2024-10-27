@@ -1,4 +1,4 @@
-import { EntityManager, FindOptionsWhere } from 'typeorm';
+import { EntityManager, FindOptionsWhere, SelectQueryBuilder } from 'typeorm';
 import { RoleResponse } from './dtos/responses/roleResponse.dto';
 
 export interface IBaseRepository<T> {
@@ -17,4 +17,8 @@ export interface UserContextInterface {
   email: string;
   fullName: string;
   role: RoleResponse;
+}
+
+export interface Getter<Input, Output = void> {
+  execute?: (input: Input) => Output;
 }
