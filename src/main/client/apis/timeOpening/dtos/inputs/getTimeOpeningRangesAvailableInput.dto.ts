@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { EVENT_TYPE } from '../../../../../../common/constants';
 
 @InputType()
 export class GetTimeOpeningRangesAvailableInput {
@@ -8,6 +9,6 @@ export class GetTimeOpeningRangesAvailableInput {
   @Field(_type => Date, { nullable: true, defaultValue: new Date() })
   endDate: Date;
 
-  @Field(_type => String, { nullable: true })
+  @Field(_type => EVENT_TYPE, { nullable: true })
   filterByOpeningType?: string | null;
 }

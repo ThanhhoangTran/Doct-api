@@ -2,7 +2,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { CustomBaseEntity } from '../common/baseEntity';
 
-@ObjectType()
+@ObjectType({ isAbstract: true })
 @Entity({
   name: 'role',
 })

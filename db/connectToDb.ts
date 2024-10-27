@@ -18,7 +18,7 @@ export class ConnectToDb {
         connection = await connection.connect();
       }
     } else {
-      const connectionOptions: ConnectionOptions = await ormconfig(nodeEnv);
+      const connectionOptions: ConnectionOptions = ormconfig(nodeEnv);
       connection = await createConnection(connectionOptions);
     }
 

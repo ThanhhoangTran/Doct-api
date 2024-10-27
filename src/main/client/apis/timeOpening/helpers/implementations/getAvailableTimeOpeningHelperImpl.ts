@@ -8,6 +8,7 @@ import { EVENT_TYPE } from '../../../../../../common/constants';
 export class GetAvailableTimeOpeningHelperImpl implements GetAvailableTimeOpeningHelper {
   execute(timeOpening: TimeOpening): { formattedDate: string; availableAppointments: any[]; availableMeetings: any[]; availableOperations: any[] } {
     const formattedDate = dayjs(timeOpening.startOpening).format('DD/MM/YYYY');
+
     let availableScheduleTimes = [];
     let availableMeetings = [];
     let availableOperations = [];

@@ -1,4 +1,4 @@
-import { executeCommandLine } from '../src/common/utilFunction';
+import { executeCommandLine } from '../src/utils/utilFunction';
 import { configuration } from '../src/config';
 import { ConnectToDb } from './connectToDb';
 

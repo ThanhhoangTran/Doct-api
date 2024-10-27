@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
 import { AuthModule } from '../auth/auth.module';
 import { TimeOpeningModule } from './apis/timeOpening/timeOpening.module';
 
@@ -9,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '../../modules/database.module';
 import { configuration } from '../../config';
 import { JwtStrategy } from '../../service/jwt/strategies/jwt.strategy';
+import { ConsultationScheduleModule } from './apis/consultationSchedule/consultationSchedule.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -22,10 +22,11 @@ import { JwtStrategy } from '../../service/jwt/strategies/jwt.strategy';
       playground: true,
       autoSchemaFile: '../../tmp/schemaClient.gql',
       sortSchema: true,
-      include: [AuthModule, TimeOpeningModule],
+      include: [AuthModule, TimeOpeningModule, ConsultationScheduleModule],
     }),
     AuthModule,
     TimeOpeningModule,
+    ConsultationScheduleModule,
   ],
 
   providers: [JwtStrategy],

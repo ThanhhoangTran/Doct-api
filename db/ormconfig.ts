@@ -4,7 +4,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { loadEntitiesAndMigrations } from './entities-migrations-loader';
 import { configuration } from '../src/config';
 
-export const ormconfig = async (hardCodeEnv?: string) => {
+export const ormconfig = (hardCodeEnv?: string) => {
   let typeOrmConfig: DataSourceOptions = {
     ...loadEntitiesAndMigrations(),
     type: 'postgres',
@@ -14,17 +14,15 @@ export const ormconfig = async (hardCodeEnv?: string) => {
       idleTimeoutMillis: 10000,
       connectionTimeoutMillis: 10000,
     },
-    // ssl: {
-    //   rejectUnauthorized: false,
-    // },
+    ssl: {
+      rejectUnauthorized: false,
+    },
   };
 
   typeOrmConfig = {
     ...typeOrmConfig,
     url: configuration.database.connectionString,
   };
-
-  console.log(typeOrmConfig);
 
   return typeOrmConfig;
 };

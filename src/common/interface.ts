@@ -1,4 +1,5 @@
 import { EntityManager, FindOptionsWhere } from 'typeorm';
+import { RoleResponse } from './dtos/responses/roleResponse.dto';
 
 export interface IBaseRepository<T> {
   getOneByCondition: (input: {
@@ -15,4 +16,5 @@ export interface UserContextInterface {
   lastName: string;
   email: string;
   fullName: string;
+  role: RoleResponse;
 }

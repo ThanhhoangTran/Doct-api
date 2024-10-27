@@ -4,6 +4,9 @@
   "description": "",
   "author": "",
   "private": true,
+  "engines": {
+    "node": ">=18.20.4"
+  },
   "license": "UNLICENSED",
   "scripts": {
     "dev": "NODE_ENV=local IS_OFFLINE=true sls offline start --reloadHandler",

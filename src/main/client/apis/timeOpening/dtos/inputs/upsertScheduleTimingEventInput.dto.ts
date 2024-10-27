@@ -6,7 +6,7 @@ export class UpsertScheduleTimingEventInput {
   @Field(_type => ID, { nullable: true })
   id?: string | null;
 
-  @Field(_type => String, { defaultValue: EVENT_TYPE.APPOINTMENT })
+  @Field(_type => EVENT_TYPE, { defaultValue: EVENT_TYPE.APPOINTMENT })
   eventType: string;
 
   @Field()

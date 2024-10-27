@@ -1,40 +1,39 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TimeOpeningService } from './timeOpening.service';
 import { UpsertScheduleTimingEventInput } from './dtos/inputs/upsertScheduleTimingEventInput.dto';
-import { TimeOpeningsResponse } from './dtos/response/timeOpeningsResponse';
-import { TimeOpeningRangeAvailableResponse } from './dtos/response/timeOpeningAvailableResponse';
+import { TimeOpeningRangeAvailableResponse } from './dtos/responses/timeOpeningAvailableResponse';
 import { GetTimeOpeningRangesAvailableInput } from './dtos/inputs/getTimeOpeningRangesAvailableInput.dto';
 import { Auth } from '../../../../common/decorators/auth.decorator';
 import { ROLE_NAME } from '../../../../common/constants';
 import { Roles } from '../../../../common/decorators/roles.decorator';
-import { TimeOpeningResponse } from '../../../../common/dtos/responses/timingOpeningResponse.dto';
 import { UserContext } from '../../../../common/decorators/user.decorator';
-import { BaseQueryFilterDto } from '../../../../common/dtos/queryFilter.dto';
 import { UserContextInterface } from '../../../../common/interface';
 import { TimeOpening } from '../../../../entities/timeOpening.entity';
+import { GetPagingTimeOpeningResponse } from './dtos/responses/getPagingTimeOpeningResponse';
+import { PaginationDto } from '../../../../common/dtos/queryFilter.dto';
 
 @Auth(['Roles'])
 @Resolver(() => TimeOpening)
 export class TimeOpeningResolver {
   constructor(private readonly timeOpeningService: TimeOpeningService) {}
 
-  @Roles(ROLE_NAME.PATIENT)
-  @Mutation(_type => TimeOpeningResponse)
+  @Roles(ROLE_NAME.DOCTOR, ROLE_NAME.PATIENT)
+  @Mutation(_type => TimeOpening)
   async upsertScheduleTimingEvent(@Args('input') input: UpsertScheduleTimingEventInput, @UserContext() currentUser: UserContextInterface) {
-    return this.timeOpeningService.upsertScheduleTimingEvent(input, currentUser);
+    return await this.timeOpeningService.upsertScheduleTimingEvent(input, currentUser);
   }
 
-  @Query(_type => TimeOpeningsResponse)
-  async getScheduleTimingEvents(@Args('queryParams') queryParams: BaseQueryFilterDto, @UserContext() currentUser: UserContextInterface): Promise<TimeOpeningsResponse> {
-    return this.timeOpeningService.getScheduleTimingEvents(queryParams, currentUser);
+  @Query(_type => GetPagingTimeOpeningResponse)
+  async getScheduleTimingEvents(@Args('pagination') pagination: PaginationDto, @UserContext() currentUser: UserContextInterface): Promise<GetPagingTimeOpeningResponse> {
+    return await this.timeOpeningService.getScheduleTimingEvents(pagination, currentUser);
   }
 
   @Roles(ROLE_NAME.DOCTOR)
-  @Query(_type => [TimeOpeningRangeAvailableResponse])
+  @Query(_type => [TimeOpeningRangeAvailableResponse], { nullable: true })
   async getTimeOpeningRangesAvailable(
     @Args('input') input: GetTimeOpeningRangesAvailableInput,
     @UserContext() currentUser: UserContextInterface,
   ): Promise<TimeOpeningRangeAvailableResponse[] | undefined> {
-    return this.timeOpeningService.getTimeOpeningRangesAvailable(input, currentUser);
+    return await this.timeOpeningService.getTimeOpeningRangesAvailable(input, currentUser);
   }
 }

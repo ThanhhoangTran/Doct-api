@@ -3,6 +3,7 @@ import { ScheduleTimingEventValidator } from '../abstractions/scheduleTimingEven
 import { UserInputError } from '@nestjs/apollo';
 import { TimeOpeningRepository } from '../../../../../../repositories/timeOpening.repository';
 import { ErrorMessage } from '../../../../../../i18n';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class ScheduleTimingEventValidatorImpl implements ScheduleTimingEventValidator {
@@ -22,6 +23,10 @@ export class ScheduleTimingEventValidatorImpl implements ScheduleTimingEventVali
     if (startTime >= endTime) {
       throw new UserInputError(ErrorMessage.TIME_OPENING.START_OPENING_CANNOT_GREATER_THAN_END_OPENING);
     }
+
+    // if(dayjs(startTime).get('day') < dayjs(endTime).get('day')){
+    //   throw new UserInputError(ErrorMessage.TIME_OPENING.)
+    // }
 
     const isOverlapSchedule = await this.timeOpeningRepo.isOverlapSchedule({ userId, startOpening: startTime, endOpening: endTime, excludeTimeOpeningIds });
     if (isOverlapSchedule) {

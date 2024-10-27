@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import { SelectQueryBuilder } from 'typeorm';
-import { BaseQueryFilterDto } from './dtos/queryFilter.dto';
-import { MetaPaginationInterface } from './response';
+import { PaginationDto } from '../common/dtos/queryFilter.dto';
+import { MetaPaginationInterface } from '../common/response';
 
 export const executeCommandLine = function (command: string) {
   exec(command, (err, stdout, stderr) => {
@@ -21,13 +21,13 @@ export const notUndefined = <T>(value: T | undefined | null): value is T => {
 
 export class BuilderPaginationResponse<T> {
   private readonly builder: SelectQueryBuilder<unknown>;
-  private readonly queryFilter: BaseQueryFilterDto;
-  constructor(builder: SelectQueryBuilder<unknown>, queryFilter: BaseQueryFilterDto) {
+  private readonly pagination: PaginationDto;
+  constructor(builder: SelectQueryBuilder<unknown>, pagination: PaginationDto) {
     this.builder = builder;
-    this.queryFilter = queryFilter;
+    this.pagination = pagination;
   }
-  private async execPagination(filter: BaseQueryFilterDto) {
-    const { pageNumber, pageSize } = filter;
+  private async execPagination(pagination: PaginationDto) {
+    const { pageNumber, pageSize } = pagination;
     const skipNumber = (pageNumber - 1) * pageSize;
 
     const [items, countNumber] = await this.builder.skip(skipNumber).take(pageSize).getManyAndCount();
@@ -43,6 +43,6 @@ export class BuilderPaginationResponse<T> {
   }
 
   async execute() {
-    return await this.execPagination(this.queryFilter);
+    return await this.execPagination(this.pagination);
   }
 }

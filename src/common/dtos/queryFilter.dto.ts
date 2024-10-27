@@ -9,21 +9,15 @@ export class FilterDto {
   @Field(_type => String)
   data: string;
 
-  @Field(_type => String, { defaultValue: QUERY_OPERATORS.EQUAL })
+  @Field(_type => QUERY_OPERATORS, { defaultValue: QUERY_OPERATORS.EQUAL })
   operator: string;
 }
 
 @InputType()
-export class BaseQueryFilterDto {
+export class PaginationDto {
   @Field(_type => Number, { defaultValue: 10, nullable: true })
   pageSize?: number = 10;
 
   @Field(_type => Number, { defaultValue: 1, nullable: true })
   pageNumber?: number = 1;
-
-  @Field(_type => FilterDto, { nullable: true })
-  filter?: FilterDto;
-
-  @Field(_type => String, { nullable: true })
-  q?: string;
 }

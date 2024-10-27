@@ -1,19 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UpsertScheduleTimingEventInput } from './dtos/inputs/upsertScheduleTimingEventInput.dto';
 import { UserInputError } from '@nestjs/apollo';
-import { TimeOpeningsResponse } from './dtos/response/timeOpeningsResponse';
 import { ScheduleTimingEventValidatorImpl } from './helpers/implementations/scheduleTimingEventValidatorImpl';
 import { ScheduleTimingEventValidator } from './helpers/abstractions/scheduleTimingEventValidator';
 import { GetTimeOpeningRangesAvailableInput } from './dtos/inputs/getTimeOpeningRangesAvailableInput.dto';
-import { TimeOpeningRangeAvailableResponse } from './dtos/response/timeOpeningAvailableResponse';
+import { TimeOpeningRangeAvailableResponse } from './dtos/responses/timeOpeningAvailableResponse';
 import dayjs from 'dayjs';
 import { GetAvailableTimeOpeningHelperImpl } from './helpers/implementations/getAvailableTimeOpeningHelperImpl';
 import { GetAvailableTimeOpeningHelper } from './helpers/abstractions/getAvailableTimeOpeningHelper';
 import { TimeOpeningRepository } from '../../../../repositories/timeOpening.repository';
 import { UserContextInterface } from '../../../../common/interface';
-import { BuilderPaginationResponse, notUndefined } from '../../../../common/utilFunction';
-import { BaseQueryFilterDto } from '../../../../common/dtos/queryFilter.dto';
+import { BuilderPaginationResponse, notUndefined } from '../../../../utils/utilFunction';
+import { PaginationDto } from '../../../../common/dtos/queryFilter.dto';
 import { ErrorMessage } from '../../../../i18n';
+import { GetPagingTimeOpeningResponse } from './dtos/responses/getPagingTimeOpeningResponse';
 @Injectable()
 export class TimeOpeningService {
   public constructor(
@@ -40,9 +40,9 @@ export class TimeOpeningService {
     return await this.timeOpeningRepo.save(timeOpening);
   }
 
-  async getScheduleTimingEvents(queryParams: BaseQueryFilterDto, currentUser: UserContextInterface): Promise<TimeOpeningsResponse> {
+  async getScheduleTimingEvents(pagination: PaginationDto, currentUser: UserContextInterface): Promise<GetPagingTimeOpeningResponse> {
     const builder = this.timeOpeningRepo.createQueryBuilder().where({ userId: currentUser.id });
-    return new BuilderPaginationResponse<TimeOpeningsResponse>(builder, queryParams).execute();
+    return new BuilderPaginationResponse<GetPagingTimeOpeningResponse>(builder, pagination).execute();
   }
 
   async getTimeOpeningRangesAvailable(input: GetTimeOpeningRangesAvailableInput, currentUser: UserContextInterface): Promise<TimeOpeningRangeAvailableResponse[] | undefined> {
@@ -64,13 +64,14 @@ export class TimeOpeningService {
     const timeOpeningRangeAvailable: Record<string, Omit<TimeOpeningRangeAvailableResponse, 'date'>> = {};
 
     //order by consultation_schedules by start_time => not exist case overlaps
+
     for (const openingTime of openingTimeByRanges) {
       const { formattedDate, availableAppointments, availableMeetings, availableOperations } = this.getAvailableTimeOpeningHelper.execute(openingTime);
       if (!timeOpeningRangeAvailable[formattedDate]) {
         timeOpeningRangeAvailable[formattedDate] = {
           appointments: availableAppointments,
-          meetings: [],
-          operations: [],
+          meetings: availableMeetings,
+          operations: availableOperations,
         };
       } else {
         timeOpeningRangeAvailable[formattedDate].appointments.push(...availableAppointments);
