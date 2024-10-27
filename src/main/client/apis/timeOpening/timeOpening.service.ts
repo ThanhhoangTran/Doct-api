@@ -14,6 +14,7 @@ import { BuilderPaginationResponse, notUndefined } from '../../../../utils/utilF
 import { PaginationDto } from '../../../../common/dtos/queryFilter.dto';
 import { ErrorMessage } from '../../../../i18n';
 import { GetPagingTimeOpeningResponse } from './dtos/responses/getPagingTimeOpeningResponse';
+import { start } from 'repl';
 @Injectable()
 export class TimeOpeningService {
   public constructor(
@@ -45,7 +46,7 @@ export class TimeOpeningService {
     return new BuilderPaginationResponse<GetPagingTimeOpeningResponse>(builder, pagination).execute();
   }
 
-  async getTimeOpeningRangesAvailable(input: GetTimeOpeningRangesAvailableInput, currentUser: UserContextInterface): Promise<TimeOpeningRangeAvailableResponse[] | undefined> {
+  async getTimeOpeningRangesAvailable(input: GetTimeOpeningRangesAvailableInput, currentUser: UserContextInterface): Promise<TimeOpeningRangeAvailableResponse> {
     const { startDate, endDate, filterByOpeningType } = input;
 
     if (dayjs(startDate).isAfter(endDate)) {
@@ -61,28 +62,22 @@ export class TimeOpeningService {
       return undefined;
     }
 
-    const timeOpeningRangeAvailable: Record<string, Omit<TimeOpeningRangeAvailableResponse, 'date'>> = {};
-
     //order by consultation_schedules by start_time => not exist case overlaps
 
+    const timeOpeningRangeAvailable: Omit<TimeOpeningRangeAvailableResponse, 'date'> = {
+      meetings: [],
+      appointments: [],
+      operations: [],
+    };
+
     for (const openingTime of openingTimeByRanges) {
-      const { formattedDate, availableAppointments, availableMeetings, availableOperations } = this.getAvailableTimeOpeningHelper.execute(openingTime);
-      if (!timeOpeningRangeAvailable[formattedDate]) {
-        timeOpeningRangeAvailable[formattedDate] = {
-          appointments: availableAppointments,
-          meetings: availableMeetings,
-          operations: availableOperations,
-        };
-      } else {
-        timeOpeningRangeAvailable[formattedDate].appointments.push(...availableAppointments);
-        timeOpeningRangeAvailable[formattedDate].meetings.push(...availableMeetings);
-        timeOpeningRangeAvailable[formattedDate].operations.push(...availableOperations);
-      }
+      const { availableAppointments, availableMeetings, availableOperations } = this.getAvailableTimeOpeningHelper.execute(openingTime);
+
+      timeOpeningRangeAvailable.appointments.push(...availableAppointments);
+      timeOpeningRangeAvailable.meetings.push(...availableMeetings);
+      timeOpeningRangeAvailable.operations.push(...availableOperations);
     }
 
-    return Object.keys(timeOpeningRangeAvailable).map(formattedDate => ({
-      date: formattedDate,
-      ...timeOpeningRangeAvailable[formattedDate],
-    }));
+    return timeOpeningRangeAvailable;
   }
 }

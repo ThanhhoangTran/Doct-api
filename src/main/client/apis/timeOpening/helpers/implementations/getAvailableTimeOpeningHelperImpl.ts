@@ -6,9 +6,7 @@ import { EVENT_TYPE } from '../../../../../../common/constants';
 
 @Injectable()
 export class GetAvailableTimeOpeningHelperImpl implements GetAvailableTimeOpeningHelper {
-  execute(timeOpening: TimeOpening): { formattedDate: string; availableAppointments: any[]; availableMeetings: any[]; availableOperations: any[] } {
-    const formattedDate = dayjs(timeOpening.startOpening).format('DD/MM/YYYY');
-
+  execute(timeOpening: TimeOpening): { availableAppointments: any[]; availableMeetings: any[]; availableOperations: any[] } {
     let availableScheduleTimes = [];
     let availableMeetings = [];
     let availableOperations = [];
@@ -19,7 +17,7 @@ export class GetAvailableTimeOpeningHelperImpl implements GetAvailableTimeOpenin
         break;
     }
 
-    return { formattedDate, availableAppointments: availableScheduleTimes, availableMeetings, availableOperations };
+    return { availableAppointments: availableScheduleTimes, availableMeetings, availableOperations };
   }
 
   private getAvailableSchedules(timeOpening: TimeOpening, markedSchedules?: Array<{ startTime: Date; endTime: Date }>) {

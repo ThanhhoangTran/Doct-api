@@ -29,11 +29,11 @@ export class TimeOpeningResolver {
   }
 
   @Roles(ROLE_NAME.DOCTOR)
-  @Query(_type => [TimeOpeningRangeAvailableResponse], { nullable: true })
+  @Query(_type => TimeOpeningRangeAvailableResponse)
   async getTimeOpeningRangesAvailable(
     @Args('input') input: GetTimeOpeningRangesAvailableInput,
     @UserContext() currentUser: UserContextInterface,
-  ): Promise<TimeOpeningRangeAvailableResponse[] | undefined> {
+  ): Promise<TimeOpeningRangeAvailableResponse> {
     return await this.timeOpeningService.getTimeOpeningRangesAvailable(input, currentUser);
   }
 }
