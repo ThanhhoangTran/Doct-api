@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ScheduleTimingEventValidator } from '../abstractions/scheduleTimingEventValidator';
 import { UserInputError } from '@nestjs/apollo';
 import { TimeOpeningRepository } from '../../../../../../repositories/timeOpening.repository';
-import { ErrorMessage } from '../../../../../../i18n';
+import { ErrorMessage } from '../../../../../../message';
 
 @Injectable()
 export class ScheduleTimingEventValidatorImpl implements ScheduleTimingEventValidator {

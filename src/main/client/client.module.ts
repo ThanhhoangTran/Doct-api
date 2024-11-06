@@ -9,6 +9,7 @@ import { DatabaseModule } from '../../modules/database.module';
 import { configuration } from '../../config';
 import { JwtStrategy } from '../../service/jwt/strategies/jwt.strategy';
 import { ConsultationScheduleModule } from './apis/consultationSchedule/consultationSchedule.module';
+import { ConversationModule } from './apis/conversation/conversation.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -22,11 +23,12 @@ import { ConsultationScheduleModule } from './apis/consultationSchedule/consulta
       playground: true,
       autoSchemaFile: '../../tmp/schemaClient.gql',
       sortSchema: true,
-      include: [AuthModule, TimeOpeningModule, ConsultationScheduleModule],
+      include: [AuthModule, TimeOpeningModule, ConsultationScheduleModule, ConversationModule],
     }),
     AuthModule,
     TimeOpeningModule,
     ConsultationScheduleModule,
+    ConversationModule,
   ],
 
   providers: [JwtStrategy],

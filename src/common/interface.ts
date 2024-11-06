@@ -17,6 +17,7 @@ export interface UserContextInterface {
   email: string;
   fullName: string;
   role: RoleResponse;
+  stun: string;
 }
 
 export interface Getter<Input, Output = void> {

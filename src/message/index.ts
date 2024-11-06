@@ -7,4 +7,7 @@ export const ErrorMessage = {
     START_OPENING_CANNOT_GREATER_THAN_END_OPENING: 'Start opening time must be less than end opening time',
     OVERLAPS_TIME_OPENING: 'Overlaps time opening, please choose another range time',
   },
+  CONVERSATION: {
+    ATTENDEES_NOT_EMPTY: 'Attendees of conversation must be not empty',
+  },
 };
