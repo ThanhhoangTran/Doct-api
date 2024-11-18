@@ -1,4 +1,4 @@
-import { EntityManager, FindOptionsWhere, SelectQueryBuilder } from 'typeorm';
+import { EntityManager, FindOptionsWhere } from 'typeorm';
 import { RoleResponse } from './dtos/responses/roleResponse.dto';
 
 export interface IBaseRepository<T> {

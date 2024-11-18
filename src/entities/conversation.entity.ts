@@ -24,5 +24,5 @@ export class Conversation extends CustomBaseEntity {
 
   @Field(_type => ID)
   @Column('uuid')
-  createdByID: string;
+  createdById: string;
 }

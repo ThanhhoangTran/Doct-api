@@ -12,7 +12,7 @@ import { TimeOpeningRepository } from '../../../../repositories/timeOpening.repo
 import { UserContextInterface } from '../../../../common/interface';
 import { BuilderPaginationResponse, notUndefined } from '../../../../utils/utilFunction';
 import { PaginationDto } from '../../../../common/dtos/queryFilter.dto';
-import { ErrorMessage } from '../../../../message';
+import { ErrorMessage } from '../../../../errorMessages';
 import { GetPagingTimeOpeningResponse } from './dtos/responses/getPagingTimeOpeningResponse';
 @Injectable()
 export class TimeOpeningService {

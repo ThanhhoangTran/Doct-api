@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql';
-import { ErrorMessage } from '../../message';
+import { ErrorMessage } from '../../errorMessages';
 
 export class PermissionError extends GraphQLError {
   extensions: {};
