@@ -1,5 +1,5 @@
 import { DataSource, EntityManager } from 'typeorm';
-import { ormconfig } from '../../db/ormconfig';
+import { ormconfig } from '../../db/dbconfig';
 
 export class CustomDataSourceManager {
   private dataSource: DataSource;

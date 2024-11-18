@@ -21,7 +21,7 @@ export const ormconfig = (hardCodeEnv?: string) => {
 
   typeOrmConfig = {
     ...typeOrmConfig,
-    url: configuration.database.connectionString,
+    url: configuration.database.system.connectionString,
   };
 
   return typeOrmConfig;

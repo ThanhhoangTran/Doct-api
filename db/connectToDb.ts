@@ -1,6 +1,6 @@
 import { Connection, ConnectionManager, ConnectionOptions, createConnection, getConnectionManager } from 'typeorm';
 
-import { ormconfig } from './ormconfig';
+import { ormconfig } from './dbconfig';
 import 'dotenv/config';
 
 export class ConnectToDb {

@@ -8,7 +8,12 @@ export const configuration = {
   sentryKey: process.env.SENTRY_DSN,
   redisUrl: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
   database: {
-    connectionString: process.env.DB_URL || '',
+    system: {
+      connectionString: process.env.DB_URL || '',
+    },
+    chatMessage: {
+      connectionString: process.env.DB_MESSAGE_URL || '',
+    },
   },
   jwt: {
     secretKey: process.env.JWT_SECRET || 'doctapi@123',

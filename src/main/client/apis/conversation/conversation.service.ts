@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { MakeConversationType } from './types/makeConversationType';
 import { UserInputError } from '@nestjs/apollo';
-import { ErrorMessage } from '../../../../message';
 import { ConversationRepository } from '../../../../repositories/conversation.repository';
 import { CustomDataSourceManager } from '../../../../utils/customEntityManager';
 import { Conversation } from '../../../../entities/conversation.entity';
 import { GetPagingConversationType } from './types/getPagingConversationType';
 import { BuilderPaginationResponse } from '../../../../utils/utilFunction';
 import { GetPagingConversationResponse } from './dtos/responses/getPagingConversationResponse';
+import { ErrorMessage } from '../../../../errorMessages';
 
 @Injectable()
 export class ConversationService {
@@ -29,7 +29,7 @@ export class ConversationService {
             userId: attendeeId,
             stun: undefined,
           })),
-          createdByID: createdBy.id,
+          createdById: createdBy.id,
           name: roomName,
         }),
       );
