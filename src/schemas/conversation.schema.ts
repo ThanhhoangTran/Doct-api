@@ -1,28 +1,26 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { CustomBaseEntity } from '../common/baseEntity';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AttendeeDto } from '../common/dtos/responses/attendeesResponse.dto';
 
-@Entity({ name: 'conversation' })
+@Schema({ strict: false })
 @ObjectType({ isAbstract: true })
-export class Conversation extends CustomBaseEntity {
+export class Conversation {
   @Field(_type => ID)
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  _id: string;
 
   @Field(_type => String)
-  @Column('varchar', {
-    length: 100,
-  })
+  @Prop()
   name: string;
 
-  @Column({
-    type: 'jsonb',
-  })
   @Field(_type => [AttendeeDto], { nullable: true })
+  @Prop({
+    type: [AttendeeDto],
+  })
   attendees: AttendeeDto[];
 
   @Field(_type => ID)
-  @Column('uuid')
+  @Prop()
   createdById: string;
 }
+
+export const ConversationSchema = SchemaFactory.createForClass(Conversation);

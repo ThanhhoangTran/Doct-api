@@ -6,6 +6,7 @@ import { eventContext } from 'aws-serverless-express/middleware';
 import express from 'express';
 import { Server } from 'http';
 import { ClientModule } from '../main/client/client.module';
+// import { WsAdapter } from '@nestjs/platform-ws';
 
 let cachedServer: Server;
 let binaryMineTypes: string[] = [];
@@ -18,6 +19,7 @@ const bootstrapServer = async (): Promise<Server> => {
       const nestApp = await NestFactory.create(ClientModule, adapter, {
         logger: ['verbose', 'debug', 'warn', 'error'],
       });
+      // nestApp.useWebSocketAdapter(new WsAdapter(nestApp));
       nestApp.use(eventContext());
       await nestApp.init();
       return (cachedServer = createServer(expressApp, undefined, binaryMineTypes));

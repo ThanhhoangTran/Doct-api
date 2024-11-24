@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { MakeConversationType } from './types/makeConversationType';
 import { UserInputError } from '@nestjs/apollo';
-import { ConversationRepository } from '../../../../repositories/conversation.repository';
-import { CustomDataSourceManager } from '../../../../utils/customEntityManager';
-import { Conversation } from '../../../../entities/conversation.entity';
 import { GetPagingConversationType } from './types/getPagingConversationType';
 import { BuilderPaginationResponse } from '../../../../utils/utilFunction';
 import { GetPagingConversationResponse } from './dtos/responses/getPagingConversationResponse';
 import { ErrorMessage } from '../../../../errorMessages';
+import { Model } from 'mongoose';
+import { Conversation } from '../../../../schemas/conversation.schema';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ConversationService {
-  public constructor(private readonly conversationRepo: ConversationRepository) {}
+  public constructor(@InjectModel(Conversation.name) private readonly conversationModel: Model<Conversation>) {}
 
   public async createConversationRoom(input: MakeConversationType): Promise<string> {
     const { attendeeIDs, createdBy, roomName } = input;
@@ -22,32 +22,30 @@ export class ConversationService {
 
     const uniqueAttendeeIDs = new Set([...attendeeIDs, createdBy.id]);
 
-    return await new CustomDataSourceManager().initialTransaction(async trx => {
-      await trx.getRepository(Conversation).insert(
-        this.conversationRepo.create({
-          attendees: [...uniqueAttendeeIDs].map(attendeeId => ({
-            userId: attendeeId,
-            stun: undefined,
-          })),
-          createdById: createdBy.id,
-          name: roomName,
-        }),
-      );
-
-      return `Conversation ${roomName} is created successfully!`;
+    await this.conversationModel.create({
+      attendees: [...uniqueAttendeeIDs].map(attendeeId => ({
+        userId: attendeeId,
+        stun: undefined,
+      })),
+      createdById: createdBy.id,
+      name: roomName,
     });
+
+    return `Conversation ${roomName} is created successfully!`;
   }
 
   public async getPagingConversations(input: GetPagingConversationType): Promise<GetPagingConversationResponse> {
     const { pagination, user } = input;
-    const builder = this.conversationRepo.createQueryBuilder('Conversation').where(
-      `EXISTS (
-         SELECT 1 FROM jsonb_array_elements(Conversation.attendees) AS attendee
-         WHERE attendee->>'userId' = :userId
-       )`,
-      { userId: user.id },
-    );
+    // const builder = this.conversationRepo.createQueryBuilder('Conversation').where(
+    //   `EXISTS (
+    //      SELECT 1 FROM jsonb_array_elements(Conversation.attendees) AS attendee
+    //      WHERE attendee->>'userId' = :userId
+    //    )`,
+    //   { userId: user.id },
+    // );
 
-    return await new BuilderPaginationResponse<GetPagingConversationResponse>(builder, pagination).execute();
+    const conversation = this.conversationModel.find({ attendees: { $elemMatch: { userId: user.id } } });
+
+    return await new BuilderPaginationResponse<GetPagingConversationResponse>(conversation, pagination).execute();
   }
 }

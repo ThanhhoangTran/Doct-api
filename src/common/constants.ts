@@ -50,3 +50,7 @@ export const CONSULTATION_STATUS = {
   RESCHEDULED: 'rescheduled',
   WAITING: 'waiting',
 };
+
+export const INJECTION_TOKEN = {
+  PUB_SUB: 'PUB_SUB',
+};
