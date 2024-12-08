@@ -6,20 +6,20 @@ import { configuration } from '../config';
 
 @Module({
   imports: [
-    MongooseModule.forRootAsync({
-      useFactory: async () => ({
-        uri: configuration.database.chatMessage.connectionString,
-        ssl: true,
-        connectionFactory: connection => {
-          console.log('Connected to MongoDB');
-          return connection;
-        },
-        connectionErrorFactory: error => {
-          console.error('Connection to MongoDB error:', error);
-          throw error;
-        },
-      }),
-    }),
+    // MongooseModule.forRootAsync({
+    //   useFactory: async () => ({
+    //     uri: configuration.database.chatMessage.connectionString,
+    //     ssl: true,
+    //     connectionFactory: connection => {
+    //       console.log('Connected to MongoDB');
+    //       return connection;
+    //     },
+    //     connectionErrorFactory: error => {
+    //       console.error('Connection to MongoDB error:', error);
+    //       throw error;
+    //     },
+    //   }),
+    // }),
     TypeOrmModule.forRootAsync({
       useFactory: async () => {
         const dbConfig = ormconfig();
