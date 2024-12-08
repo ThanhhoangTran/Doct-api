@@ -17,7 +17,3 @@ clientServer:
             - X-Api-Key
             - X-Amz-Security-Token
             - X-Amz-User-Agent
-    # - websocket: # Define a WebSocket endpoint for subscriptions
-    #     route: $connect
-    # - websocket:
-    #     route: $disconnect

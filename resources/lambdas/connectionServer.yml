@@ -1,0 +1,5 @@
+connectionServer:
+  handler: src/handlers/connectionServer.handler
+  events:
+    - websocket: # Define a WebSocket endpoint for subscriptions
+        route: notification

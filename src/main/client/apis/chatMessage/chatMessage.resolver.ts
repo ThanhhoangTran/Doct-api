@@ -34,7 +34,6 @@ export class ChatMessageResolver {
 
   @Query(_type => GetPagingChatMessageResponse)
   public async getChatMessages(@Args('conversationId') conversationId: string, @Args('pagination') pagination: PaginationDto, @UserContext() ctx: UserContextInterface) {
-    console.log('🚀 ~ ChatMessageResolver ~ getChatMessages ~ conversationId:', conversationId);
     return await this.chatMessageService.getPagingMessagesByConversationId({
       userId: ctx.id,
       conversationId,

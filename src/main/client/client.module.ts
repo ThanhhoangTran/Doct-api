@@ -25,6 +25,7 @@ import { ChatMessageModule } from './apis/chatMessage/chatMessage.module';
       playground: true,
       autoSchemaFile: '../../tmp/schemaClient.gql',
       sortSchema: true,
+      //using SSE (server-send-event) => specify api need to get notification =>
       // subscriptions: {
       //   'graphql-ws': {
       //     onConnect: (context: any) => {

@@ -26,6 +26,7 @@ package:
 useDotenv: true
 
 provider:
+  profile: HoangTran
   name: aws
   runtime: nodejs18.x
   region: ${opt:region, 'ap-southeast-1'}
@@ -62,6 +63,7 @@ plugins:
 
 functions:
   - ${file(./resources/lambdas/clientServer.yml)}
+  - ${file(./resources/lambdas/connectionServer.yml)}
 
 resources:
   - ${file(./resources/s3.yml)}
