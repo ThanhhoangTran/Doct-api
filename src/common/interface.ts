@@ -1,5 +1,6 @@
 import { EntityManager, FindOptionsWhere } from 'typeorm';
 import { RoleResponse } from './dtos/responses/roleResponse.dto';
+import { APIGatewayEventWebsocketRequestContextV2 } from 'aws-lambda';
 
 export interface IBaseRepository<T> {
   getOneByCondition: (input: {
@@ -22,4 +23,10 @@ export interface UserContextInterface {
 
 export interface Getter<Input, Output = void> {
   execute?: (input: Input) => Output;
+}
+
+export interface ISocketGatewayRequestContext extends APIGatewayEventWebsocketRequestContextV2 {
+  identity: {
+    sourceIp: string;
+  };
 }

@@ -9,6 +9,9 @@ export class UserConnection {
   connectionId: string;
 
   @Prop()
+  sourceIp: string;
+
+  @Prop()
   lastActive: Date;
 }
 

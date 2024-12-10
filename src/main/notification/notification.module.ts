@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ormconfig } from '../../db/dbconfig';
 import { MongooseModule } from '@nestjs/mongoose';
-import { configuration } from '../config';
+import { configuration } from '../../config';
+import { UserConnection, UserConnectionSchema } from '../../schemas/userConnection';
+import { NotificationService } from './notification.service';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -20,17 +21,18 @@ import { configuration } from '../config';
         },
       }),
     }),
-    TypeOrmModule.forRootAsync({
-      useFactory: async () => {
-        const dbConfig = ormconfig();
-        return {
-          ...dbConfig,
-          keepConnectionAlive: true,
-          logging: true,
-          migrationsRun: true,
-        };
+    MongooseModule.forFeature([
+      {
+        name: UserConnection.name,
+        schema: UserConnectionSchema,
       },
+    ]),
+
+    JwtModule.register({
+      secret: configuration.jwt.secretKey,
+      signOptions: { expiresIn: '1h' },
     }),
   ],
+  providers: [NotificationService],
 })
-export class DatabaseModule {}
+export class NotificationModule {}
