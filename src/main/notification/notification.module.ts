@@ -3,7 +3,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { configuration } from '../../config';
 import { UserConnection, UserConnectionSchema } from '../../schemas/userConnection';
 import { NotificationService } from './notification.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtCommonModule } from '../../modules/jwtModule.module';
+import { ChatMessage, ChatMessageSchema } from '../../schemas/chatMessage.schema';
+import { Conversation, ConversationSchema } from '../../schemas/conversation.schema';
 
 @Module({
   imports: [
@@ -26,12 +28,16 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
         name: UserConnection.name,
         schema: UserConnectionSchema,
       },
+      {
+        name: Conversation.name,
+        schema: ConversationSchema,
+      },
+      {
+        name: ChatMessage.name,
+        schema: ChatMessageSchema,
+      },
     ]),
-
-    JwtModule.register({
-      secret: configuration.jwt.secretKey,
-      signOptions: { expiresIn: '1h' },
-    }),
+    JwtCommonModule,
   ],
   providers: [NotificationService],
 })

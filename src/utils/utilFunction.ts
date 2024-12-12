@@ -1,6 +1,9 @@
 import { exec } from 'child_process';
 import { PaginationDto } from '../common/dtos/queryFilter.dto';
 import { MetaPaginationInterface } from '../common/response';
+import { configuration } from '../config';
+import { readFileSync } from 'fs';
+import http from 'http';
 
 export const executeCommandLine = function (command: string) {
   exec(command, (err, stdout, stderr) => {
@@ -55,3 +58,18 @@ export class BuilderPaginationResponse<T> {
     return await this.execPagination(this.pagination);
   }
 }
+
+export const executeLambdaEventTest = async (handler, sourceFile: string) => {
+  const nodeEnv = configuration.api.nodeEnv;
+
+  if (nodeEnv !== 'local') {
+    return;
+  }
+
+  try {
+    const event = readFileSync(sourceFile, { encoding: 'utf-8' });
+    await handler(event);
+  } catch (error) {
+    throw error;
+  }
+};

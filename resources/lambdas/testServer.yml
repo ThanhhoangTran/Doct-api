@@ -1,0 +1,21 @@
+testServer:
+  handler: src/handlers/connectionServer.testHandler
+  maximumRetryAttempts: 2
+  package:
+    individually: true
+  events:
+    - http:
+        path: /test
+        method: any
+        cors:
+          origin: '*'
+          allowCredentials: false
+          headers:
+            - Accept
+            - Content-Type
+            - Content-Length
+            - Authorization
+            - X-Amz-Date
+            - X-Api-Key
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent

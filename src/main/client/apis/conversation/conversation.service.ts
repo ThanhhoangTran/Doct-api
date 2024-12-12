@@ -13,7 +13,7 @@ import { InjectModel } from '@nestjs/mongoose';
 export class ConversationService {
   public constructor(@InjectModel(Conversation.name) private readonly conversationModel: Model<Conversation>) {}
 
-  public async createConversationRoom(input: MakeConversationType): Promise<string> {
+  public async createConversationRoom(input: MakeConversationType): Promise<Conversation> {
     const { attendeeIDs, createdBy, roomName } = input;
 
     if (!attendeeIDs?.filter(attendeeID => attendeeID !== createdBy.id).length) {
@@ -22,16 +22,13 @@ export class ConversationService {
 
     const uniqueAttendeeIDs = new Set([...attendeeIDs, createdBy.id]);
 
-    await this.conversationModel.create({
+    return await this.conversationModel.create({
       attendees: [...uniqueAttendeeIDs].map(attendeeId => ({
         userId: attendeeId,
-        stun: undefined,
       })),
       createdById: createdBy.id,
       name: roomName,
     });
-
-    return `Conversation ${roomName} is created successfully!`;
   }
 
   public async getPagingConversations(input: GetPagingConversationType): Promise<GetPagingConversationResponse> {

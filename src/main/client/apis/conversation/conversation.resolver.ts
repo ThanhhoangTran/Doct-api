@@ -15,10 +15,12 @@ export class ConversationResolver {
 
   @Mutation(_type => String)
   public async makeConversation(@UserContext() userContext: UserContextInterface, @Args('input') input: MakeConversationInput): Promise<string> {
-    return await this.conversationService.createConversationRoom({
+    await this.conversationService.createConversationRoom({
       createdBy: userContext,
       ...input,
     });
+
+    return 'Create successfully';
   }
 
   @Query(_type => GetPagingConversationResponse)

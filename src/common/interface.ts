@@ -30,3 +30,10 @@ export interface ISocketGatewayRequestContext extends APIGatewayEventWebsocketRe
     sourceIp: string;
   };
 }
+
+export interface NotificationPayload {
+  body: any;
+  connectionId: string;
+  routeKey: string;
+  callbackUrl: string;
+}

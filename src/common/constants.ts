@@ -54,3 +54,7 @@ export const CONSULTATION_STATUS = {
 export const INJECTION_TOKEN = {
   PUB_SUB: 'PUB_SUB',
 };
+
+export const ROUTE_KEY = {
+  NOTIFICATION: 'notification',
+};
