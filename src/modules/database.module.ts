@@ -1,11 +1,14 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormconfig } from '../../db/dbconfig';
 import { MongooseModule } from '@nestjs/mongoose';
 import { configuration } from '../config';
+import { ChatMessage, ChatMessageSchema } from '../schemas/chatMessage.schema';
+import { Conversation, ConversationSchema } from '../schemas/conversation.schema';
+import { UserConnection, UserConnectionSchema } from '../schemas/userConnection';
 
-@Module({
-  imports: [
+export const mongooseModules = () => {
+  return [
     MongooseModule.forRootAsync({
       useFactory: async () => ({
         uri: configuration.database.chatMessage.connectionString,
@@ -20,6 +23,27 @@ import { configuration } from '../config';
         },
       }),
     }),
+    MongooseModule.forFeature([
+      {
+        name: UserConnection.name,
+        schema: UserConnectionSchema,
+      },
+      {
+        name: Conversation.name,
+        schema: ConversationSchema,
+      },
+      {
+        name: ChatMessage.name,
+        schema: ChatMessageSchema,
+      },
+    ]),
+  ];
+};
+
+@Global()
+@Module({
+  imports: [
+    ...mongooseModules(),
     TypeOrmModule.forRootAsync({
       useFactory: async () => {
         const dbConfig = ormconfig();
@@ -32,5 +56,6 @@ import { configuration } from '../config';
       },
     }),
   ],
+  exports: [MongooseModule],
 })
 export class DatabaseModule {}

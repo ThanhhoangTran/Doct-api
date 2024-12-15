@@ -57,4 +57,5 @@ export const INJECTION_TOKEN = {
 
 export const ROUTE_KEY = {
   NOTIFICATION: 'notification',
+  MESSAGE: 'message',
 };

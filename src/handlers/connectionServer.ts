@@ -1,20 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { APIGatewayProxyEventBase, APIGatewayProxyWebsocketEventV2, APIGatewayProxyWebsocketHandlerV2 } from 'aws-lambda';
 import { INestApplicationContext } from '@nestjs/common';
-import { NotificationModule } from '../main/notification/notification.module';
-import { NotificationService } from '../main/notification/notification.service';
 import { ISocketGatewayRequestContext } from '../common/interface';
+import { ConnectionModule } from '../main/connection/connection.module';
+import { ConnectionService } from '../main/connection/connection.service';
 
 export const handler: APIGatewayProxyWebsocketHandlerV2 = async (event: APIGatewayProxyWebsocketEventV2, context) => {
   console.log('🚀 ~ event:', JSON.stringify(event));
 
-  let notificationModule: INestApplicationContext;
+  let connectionModule: INestApplicationContext;
   let responseMessage: string | undefined;
 
   try {
     const eventGateway = event as APIGatewayProxyEventBase<ISocketGatewayRequestContext>;
-    const notificationModule = await NestFactory.createApplicationContext(NotificationModule);
-    const notificationService = notificationModule.get(NotificationService);
+    const connectionModule = await NestFactory.createApplicationContext(ConnectionModule);
+    const connectionService = connectionModule.get(ConnectionService);
 
     if (eventGateway.requestContext) {
       const {
@@ -26,29 +26,36 @@ export const handler: APIGatewayProxyWebsocketHandlerV2 = async (event: APIGatew
         identity: { sourceIp },
       } = eventGateway.requestContext;
 
-      console.log(`🚀 websocket - eventType: ${eventType}`);
-
       switch (eventType) {
         case 'CONNECT': {
           const authToken = eventGateway.queryStringParameters?.token;
           if (!authToken) {
             return {
               statusCode: 401,
-              body: JSON.stringify({ message: 'Unauthorized: Invalid token' }),
+              body: JSON.stringify({ message: 'Unauthorized: Missing auth token' }),
             };
           }
 
-          responseMessage = await notificationService.connectionHandler(sourceIp, connectionId, authToken);
+          const { message, error } = await connectionService.connectionHandler(sourceIp, connectionId, authToken);
+          responseMessage = message;
+          if (error) {
+            return {
+              statusCode: 401,
+              body: JSON.stringify({ message: 'Unauthorized: Invalid token' }),
+            };
+          }
           break;
         }
 
-        case 'DISCONNECT':
-          responseMessage = await notificationService.disconnectHandler(connectionId);
+        case 'DISCONNECT': {
+          responseMessage = await connectionService.disconnectHandler(connectionId);
           break;
+        }
 
-        case 'MESSAGE':
+        default: {
           const endpointUrl = `https://${domainName}/${stage}`;
-          await notificationService.notificationHandler({ routeKey, callbackUrl: endpointUrl, body: event.body, connectionId });
+          await connectionService.process({ routeKey, callbackUrl: endpointUrl, body: event.body, connectionId });
+        }
       }
     }
 
@@ -58,11 +65,9 @@ export const handler: APIGatewayProxyWebsocketHandlerV2 = async (event: APIGatew
     };
   } catch (error) {
     console.log('🚀 ~ APIGatewayProxyWebsocketHandler ~ error:', error);
-    if (notificationModule) {
-      await notificationModule.close();
+    if (connectionModule) {
+      await connectionModule.close();
     }
-
-    throw error;
   }
 };
 

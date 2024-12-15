@@ -16,6 +16,10 @@ export class ChatMessage {
   @Prop()
   conversationId: string;
 
+  @Field(_type => [ID], { nullable: true })
+  @Prop()
+  visibilityReceiverIds: string[];
+
   @Field(_type => ID)
   @Prop()
   senderId: string;

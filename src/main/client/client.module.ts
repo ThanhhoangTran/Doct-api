@@ -10,7 +10,6 @@ import { ConsultationScheduleModule } from './apis/consultationSchedule/consulta
 import { ConversationModule } from './apis/conversation/conversation.module';
 import { ChatMessageModule } from './apis/chatMessage/chatMessage.module';
 import { JwtCommonModule } from '../../modules/jwtModule.module';
-// import { PubSubModule } from '../../common/pubsub/pubsub.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -21,15 +20,6 @@ import { JwtCommonModule } from '../../modules/jwtModule.module';
       playground: true,
       autoSchemaFile: '../../tmp/schemaClient.gql',
       sortSchema: true,
-      //using SSE (server-send-event) => specify api need to get notification =>
-      // subscriptions: {
-      //   'graphql-ws': {
-      //     onConnect: (context: any) => {
-      //       console.log('🚀 ~ context:', context);
-      //       return;
-      //     },
-      //   },
-      // },
       include: [AuthModule, TimeOpeningModule, ConsultationScheduleModule, ConversationModule, ChatMessageModule],
     }),
     AuthModule,
@@ -37,7 +27,6 @@ import { JwtCommonModule } from '../../modules/jwtModule.module';
     ConsultationScheduleModule,
     ConversationModule,
     ChatMessageModule,
-    // PubSubModule,
   ],
   providers: [JwtStrategy],
 })

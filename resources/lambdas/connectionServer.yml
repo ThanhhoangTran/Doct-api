@@ -3,5 +3,11 @@ connectionServer:
   package:
     individually: true
   events:
-    - websocket: # Define a WebSocket endpoint for subscriptions
+    - websocket:
+        route: $connect
+    - websocket:
+        route: $disconnect
+    - websocket:
         route: notification
+    - websocket:
+        route: message
