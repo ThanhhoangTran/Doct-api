@@ -57,5 +57,6 @@ export const INJECTION_TOKEN = {
 
 export const ROUTE_KEY = {
   NOTIFICATION: 'notification',
+  VIDEO_CALL: 'video_call',
   MESSAGE: 'message',
-};
+} as const;

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConnectionService } from './connection.service';
 import { JwtCommonModule } from '../../modules/jwtModule.module';
-import { mongooseModules } from '../../modules/database.module';
+import { DbConnectionModule } from './dbConnection.module';
+import { MessageProcessorModule } from './messageProcessor/message.module';
 
 @Module({
-  imports: [...mongooseModules(), JwtCommonModule],
+  imports: [DbConnectionModule, JwtCommonModule, MessageProcessorModule],
   providers: [ConnectionService],
 })
 export class ConnectionModule {}

@@ -31,7 +31,7 @@ export interface ISocketGatewayRequestContext extends APIGatewayEventWebsocketRe
   };
 }
 
-export interface NotificationPayload {
+export interface ConnectionPayload {
   body: any;
   connectionId: string;
   routeKey: string;
