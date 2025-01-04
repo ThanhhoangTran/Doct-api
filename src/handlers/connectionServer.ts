@@ -29,21 +29,15 @@ export const handler: APIGatewayProxyWebsocketHandlerV2 = async (event: APIGatew
       switch (eventType) {
         case 'CONNECT': {
           const authToken = eventGateway.queryStringParameters?.token;
-          if (!authToken) {
-            return {
-              statusCode: 401,
-              body: JSON.stringify({ message: 'Unauthorized: Missing auth token' }),
-            };
-          }
+          const { user, error } = await connectionService.verifyUserAuthorization(authToken);
 
-          const { message, error } = await connectionService.connectionHandler(sourceIp, connectionId, authToken);
-          responseMessage = message;
           if (error) {
             return {
               statusCode: 401,
-              body: JSON.stringify({ message: 'Unauthorized: Invalid token' }),
             };
           }
+
+          responseMessage = await connectionService.connectionHandler(sourceIp, connectionId, user.id);
           break;
         }
 
@@ -70,12 +64,3 @@ export const handler: APIGatewayProxyWebsocketHandlerV2 = async (event: APIGatew
     }
   }
 };
-
-// export const testHandler = async () => {
-//   const event = readFileSync('./mocker/events/notification.json', { encoding: 'utf-8' });
-//   console.log('🚀 ~ testHandler ~ event:', event);
-//   const notificationModule = await NestFactory.createApplicationContext(NotificationModule);
-//   const notificationService = notificationModule.get(NotificationService);
-
-//   await notificationService.connectionHandler('1', '2', 'otkencaksdfkjdkjankl-djksnf');
-// };

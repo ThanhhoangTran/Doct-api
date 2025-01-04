@@ -10,4 +10,7 @@ export const ErrorMessage = {
   CONVERSATION: {
     ATTENDEES_NOT_EMPTY: 'Attendees of conversation must be not empty',
   },
+  CONNECTION: {
+    ROUTE_KEY_NOT_FOUND: 'Action type is not found!',
+  },
 };

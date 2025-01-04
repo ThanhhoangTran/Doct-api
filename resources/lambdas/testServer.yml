@@ -1,11 +1,11 @@
 testServer:
-  handler: src/handlers/connectionServer.testHandler
+  handler: src/handlers/fakeServer.handler
   maximumRetryAttempts: 2
   package:
     individually: true
   events:
     - http:
-        path: /test
+        path: /fake/{proxy+}
         method: any
         cors:
           origin: '*'

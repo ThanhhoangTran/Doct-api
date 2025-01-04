@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserConnection } from '../../schemas/userConnection';
@@ -7,8 +7,9 @@ import { configuration } from '../../config';
 import { ConnectionPayload, UserContextInterface } from '../../common/interface';
 import { ROUTE_KEY } from '../../common/constants';
 import { GatewayAdapter } from '../../service/aws/gateway';
-import { ConnectionHandlerType } from './types/connectionHandlerType';
 import { MessageProcessorService } from './messageProcessor/message.service';
+import { ConnectionHandlerType } from './types/connectionHandlerType';
+import { ErrorMessage } from '../../errorMessages';
 
 @Injectable()
 export class ConnectionService {
@@ -18,24 +19,30 @@ export class ConnectionService {
     private messageProcessService: MessageProcessorService,
   ) {}
 
-  public async connectionHandler(sourceIp: string, connectionId: string, authToken: string): Promise<ConnectionHandlerType> {
-    let resultConnection: ConnectionHandlerType = {
-      message: '',
-    };
-
+  public async verifyUserAuthorization(token?: string | null): Promise<ConnectionHandlerType> {
+    let userAuthorizationResult: ConnectionHandlerType = {};
     try {
-      const user: UserContextInterface = await this.jwtService.verifyAsync(authToken, { secret: configuration.jwt.secretKey });
-      await this.userConnection.create({
-        sourceIp,
-        userId: user.id,
-        connectionId,
-      });
+      if (!token) {
+        throw new Error('Unauthorized: Missing auth token');
+      }
 
-      resultConnection.message = 'Web-Socket Connected Successfully';
+      const user: UserContextInterface = await this.jwtService.verifyAsync(token, { secret: configuration.jwt.secretKey });
+      userAuthorizationResult.user = user;
     } catch (error) {
-      resultConnection.error = error;
+      userAuthorizationResult.error = error;
     }
-    return resultConnection;
+
+    return userAuthorizationResult;
+  }
+
+  public async connectionHandler(sourceIp: string, connectionId: string, userId: string): Promise<string> {
+    await this.userConnection.create({
+      sourceIp,
+      userId,
+      connectionId,
+    });
+
+    return 'Web-Socket Connected Successfully';
   }
 
   public async disconnectHandler(connectionId: string): Promise<string> {
@@ -53,7 +60,6 @@ export class ConnectionService {
     }
 
     const gatewayAdapter = new GatewayAdapter(callbackUrl);
-    console.log('🚀 ConnectionService - process', routeKey);
 
     switch (routeKey) {
       case ROUTE_KEY.MESSAGE: {
@@ -66,6 +72,9 @@ export class ConnectionService {
       }
       case ROUTE_KEY.VIDEO_CALL: {
       }
+
+      default:
+        throw new BadRequestException(ErrorMessage.CONNECTION.ROUTE_KEY_NOT_FOUND);
     }
   }
 

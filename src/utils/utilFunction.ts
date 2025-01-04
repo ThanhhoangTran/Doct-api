@@ -3,7 +3,6 @@ import { PaginationDto } from '../common/dtos/queryFilter.dto';
 import { MetaPaginationInterface } from '../common/response';
 import { configuration } from '../config';
 import { readFileSync } from 'fs';
-import http from 'http';
 
 export const executeCommandLine = function (command: string) {
   exec(command, (err, stdout, stderr) => {

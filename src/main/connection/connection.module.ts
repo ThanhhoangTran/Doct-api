@@ -7,5 +7,6 @@ import { MessageProcessorModule } from './messageProcessor/message.module';
 @Module({
   imports: [DbConnectionModule, JwtCommonModule, MessageProcessorModule],
   providers: [ConnectionService],
+  exports: [ConnectionService],
 })
 export class ConnectionModule {}

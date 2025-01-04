@@ -1,4 +1,6 @@
+import { UserContextInterface } from '../../../common/interface';
+
 export type ConnectionHandlerType = {
-  message: string;
+  user?: UserContextInterface;
   error?: Error;
 };

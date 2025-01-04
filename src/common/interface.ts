@@ -35,5 +35,5 @@ export interface ConnectionPayload {
   body: any;
   connectionId: string;
   routeKey: string;
-  callbackUrl: string;
+  callbackUrl?: string | null;
 }
