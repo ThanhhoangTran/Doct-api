@@ -35,6 +35,20 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=hoang@1234
 
+  mongo:
+    container_name: mongo_container_doct-db
+    image: mongo:latest
+    restart: always
+    networks:
+      - my_network
+    ports:
+      - 27017:27017
+    volumes:
+      - .docker/data/db/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=hoangtran
+      - MONGO_INITDB_ROOT_PASSWORD=hoang1234
+
   redis:
     container_name: redis_container_doct-db
     image: bitnami/redis

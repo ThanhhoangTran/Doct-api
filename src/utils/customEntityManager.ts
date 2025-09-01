@@ -1,12 +1,10 @@
 import { DataSource, EntityManager } from 'typeorm';
-import { ormconfig } from '../../db/dbconfig';
+import { clientDBConfig } from '../../db/dbconfig';
 
 export class CustomDataSourceManager {
   private dataSource: DataSource;
   public constructor() {
-    this.dataSource = new DataSource({
-      ...ormconfig(),
-    });
+    this.dataSource = new DataSource(clientDBConfig());
   }
 
   public async initDataSource() {
