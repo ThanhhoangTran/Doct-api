@@ -4,7 +4,7 @@ import { MetaPaginationInterface } from '../common/response';
 import { configuration } from '../config';
 import { readFileSync } from 'fs';
 
-export const executeCommandLine = function (command: string) {
+export const executeCommandLine = function (command: string): void {
   exec(command, (err, stdout, stderr) => {
     if (err) {
       console.error(err);
@@ -28,7 +28,7 @@ export class BuilderPaginationResponse<T> {
     this.pagination = pagination;
   }
 
-  private async execPagination(pagination: PaginationDto) {
+  private async execPagination(pagination: PaginationDto): Promise<T> {
     const { pageNumber, pageSize } = pagination;
     const skipNumber = (pageNumber - 1) * pageSize;
 
@@ -53,12 +53,12 @@ export class BuilderPaginationResponse<T> {
     return { items, meta } as T;
   }
 
-  async execute() {
+  async execute(): Promise<T> {
     return await this.execPagination(this.pagination);
   }
 }
 
-export const executeLambdaEventTest = async (handler, sourceFile: string) => {
+export const executeLambdaEventTest = async (handler, sourceFile: string): Promise<void> => {
   const nodeEnv = configuration.api.nodeEnv;
 
   if (nodeEnv !== 'local') {

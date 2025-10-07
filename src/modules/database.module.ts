@@ -48,7 +48,7 @@ const createMongoConfig = (): MongooseModuleFactoryOptions => ({
 
 // PostgreSQL connection configuration
 const createPostgresConfig = (): TypeOrmModuleOptions => {
-  const dbConfig = clientDBConfig();
+  const dbConfig = clientDBConfig(configuration.api.nodeEnv);
   return {
     ...dbConfig,
     keepConnectionAlive: true,

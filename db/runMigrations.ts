@@ -23,4 +23,5 @@ const main = async () => {
     await connection.undoLastMigration({ transaction: 'all' });
   }
 };
+
 main();

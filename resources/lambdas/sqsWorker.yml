@@ -1,0 +1,9 @@
+sqsMessageExecutor:
+  handler: ./src/handlers/sqsWorker.handler
+  description: 'Process messages from SQS queue'
+  events:
+    - sqs: arn:aws:sqs:${aws:region}:${aws:accountId}:${self:custom.sqs}
+  timeout: 600 # 0mins
+  memorySize: 256
+  logs:
+    logGroup: /aws/lambda/${self:service}-${opt:stage, 'dev'}-sqsWorker

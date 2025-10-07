@@ -5,7 +5,7 @@ import { ISocketGatewayRequestContext } from '../common/interface';
 import { ConnectionModule } from '../main/connection/connection.module';
 import { ConnectionService } from '../main/connection/connection.service';
 
-export const handler: APIGatewayProxyWebsocketHandlerV2 = async (event: APIGatewayProxyWebsocketEventV2, context) => {
+export const handler: APIGatewayProxyWebsocketHandlerV2 = async (event: APIGatewayProxyWebsocketEventV2) => {
   console.log('🚀 ~ event:', JSON.stringify(event));
 
   let connectionModule: INestApplicationContext;

@@ -1,7 +1,6 @@
 import { Connection, ConnectionManager, ConnectionOptions, createConnection, getConnectionManager } from 'typeorm';
 
-import { ormconfig } from './dbconfig';
-import 'dotenv/config';
+import { clientDBConfig } from './dbconfig';
 
 export class ConnectToDb {
   private connectionManager: ConnectionManager;
@@ -18,7 +17,7 @@ export class ConnectToDb {
         connection = await connection.connect();
       }
     } else {
-      const connectionOptions: ConnectionOptions = ormconfig(nodeEnv);
+      const connectionOptions: ConnectionOptions = clientDBConfig(nodeEnv);
       connection = await createConnection(connectionOptions);
     }
 

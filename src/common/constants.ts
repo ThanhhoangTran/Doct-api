@@ -15,7 +15,7 @@ export const QUERY_OPERATORS = {
   LESS_THAN_EQUAL: 'less_than_equal',
 };
 
-export type ENUM_TYPE<T extends Object> = T[keyof T];
+export type ENUM_TYPE<T extends object> = T[keyof T];
 
 export const USER_VERIFICATION_REQUEST_TYPE = {
   RESET_PASSWORD: 'reset_password',
@@ -60,3 +60,5 @@ export const ROUTE_KEY = {
   VIDEO_CALL: 'video_call',
   MESSAGE: 'message',
 } as const;
+
+export const SQS_INJECTION_TOKEN = 'SQS_INJECTION_TOKEN';

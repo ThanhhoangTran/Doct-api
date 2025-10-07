@@ -21,6 +21,7 @@ export class ConnectionService {
 
   public async verifyUserAuthorization(token?: string | null): Promise<ConnectionHandlerType> {
     let userAuthorizationResult: ConnectionHandlerType = {};
+
     try {
       if (!token) {
         throw new Error('Unauthorized: Missing auth token');

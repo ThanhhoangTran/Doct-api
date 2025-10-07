@@ -37,3 +37,12 @@ export interface ConnectionPayload {
   routeKey: string;
   callbackUrl?: string | null;
 }
+
+export interface MessageInterface {
+  messageType: string;
+  body: string;
+}
+export interface SQSProcessorInterface {
+  getMessageType(): string;
+  process(msg: MessageInterface): Promise<void>;
+}

@@ -16,7 +16,7 @@ export class MessageProcessorService {
     @InjectModel(Conversation.name) private readonly conversation: Model<Conversation>,
   ) {}
 
-  public async process(payload: ProcessMessagePayload) {
+  public async process(payload: ProcessMessagePayload): Promise<void> {
     try {
       const { connectionId, gateway, body } = payload;
       const { message, conversationId, visibilityReceiverIds, replyMessageId }: MessageContent = JSON.parse(body).data;
@@ -38,7 +38,7 @@ export class MessageProcessorService {
 
       let receiverIds = conversation.attendees.map(attendee => attendee.userId).filter(id => id !== senderConnection.userId);
       if (visibilityReceiverIds?.length) {
-        receiverIds.filter(receiverId => visibilityReceiverIds.includes(receiverId));
+        receiverIds = receiverIds.filter(receiverId => visibilityReceiverIds.includes(receiverId));
       }
 
       const receiverConnections = await this.userConnection.find({

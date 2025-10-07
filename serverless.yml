@@ -60,8 +60,9 @@ plugins:
 
 functions:
   - ${file(./resources/lambdas/clientServer.yml)}
-  - ${file(./resources/lambdas/connectionServer.yml)}
+  # - ${file(./resources/lambdas/connectionServer.yml)}
   - ${file(./resources/lambdas/testServer.yml)}
+  - ${file(./resources/lambdas/sqsWorker.yml)}
 
 resources:
   - ${file(./resources/s3.yml)}
