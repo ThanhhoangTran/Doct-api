@@ -7,8 +7,6 @@ import { TimeOpeningModule } from './apis/timeOpening/timeOpening.module';
 import { DatabaseModule } from '../../modules/database.module';
 import { JwtStrategy } from '../../service/jwt/strategies/jwt.strategy';
 import { ConsultationScheduleModule } from './apis/consultationSchedule/consultationSchedule.module';
-import { ConversationModule } from './apis/conversation/conversation.module';
-import { ChatMessageModule } from './apis/chatMessage/chatMessage.module';
 import { JwtCommonModule } from '../../modules/jwtModule.module';
 @Module({
   imports: [
@@ -20,13 +18,19 @@ import { JwtCommonModule } from '../../modules/jwtModule.module';
       playground: true,
       autoSchemaFile: '../../tmp/schemaClient.gql',
       sortSchema: true,
-      include: [AuthModule, TimeOpeningModule, ConsultationScheduleModule, ConversationModule, ChatMessageModule],
+      include: [
+        AuthModule,
+        TimeOpeningModule,
+        ConsultationScheduleModule,
+        // ConversationModule,
+        // ChatMessageModule
+      ],
     }),
     AuthModule,
     TimeOpeningModule,
     ConsultationScheduleModule,
-    ConversationModule,
-    ChatMessageModule,
+    // ConversationModule,
+    // ChatMessageModule,
   ],
   providers: [JwtStrategy],
 })
