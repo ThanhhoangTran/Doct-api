@@ -3,6 +3,7 @@ clientServer:
   maximumRetryAttempts: 2
   package:
     individually: true
+  timeout:
   events:
     - http:
         path: /client

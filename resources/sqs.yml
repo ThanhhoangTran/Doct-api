@@ -3,7 +3,7 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: ${self:custom.sqs}
-      VisibilityTimeout: 300 # 5mins
+      VisibilityTimeout: 660
       ReceiveMessageWaitTimeSeconds: 20
       RedrivePolicy:
         deadLetterTargetArn:

@@ -3,7 +3,7 @@ service: doct-api-dev
 custom:
   serverless-offline:
     useChildProcesses: true
-  baseName: ${env:BASE_NAME, 'doct-api-dev'}
+  baseName: ${env:BASE_NAME, 'doct-api'}
   s3BucketName: ${self:custom.baseName}-s3-bucket
   sqs: ${self:custom.baseName}-message-queue
   sqs-dlq: ${self:custom.baseName}-message-dead-letter-queue
@@ -36,21 +36,29 @@ provider:
     MAIN_QUEUE_URL: { Ref: MessageQueue }
     DB_URL: ${env:DB_URL}
 
+  vpc:
+    securityGroupIds:
+      - sg-0d0a771c00a4491c5
+    subnetIds:
+      - subnet-0a8ee345922b2bc68
+
   apiGateway:
     shouldStartNameWithService: true
 
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - s3:*
-      Resource:
-        - { Fn::Join: ['', [{ Fn::GetAtt: [S3Bucket, Arn] }, '*']] }
-    - Effect: Allow
-      Action:
-        - sqs:*
-      Resource:
-        - { Fn::GetAtt: [MessageQueue, Arn] }
-        - { Fn::GetAtt: [DeadLetterQueue, Arn] }
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:*
+          Resource:
+            - { Fn::Join: ['', [{ Fn::GetAtt: [S3Bucket, Arn] }, '*']] }
+        - Effect: Allow
+          Action:
+            - sqs:*
+          Resource:
+            - { Fn::GetAtt: [MessageQueue, Arn] }
+            - { Fn::GetAtt: [DeadLetterQueue, Arn] }
 
 plugins:
   - serverless-webpack
