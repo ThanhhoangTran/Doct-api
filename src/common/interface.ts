@@ -46,3 +46,7 @@ export interface SQSProcessorInterface {
   getMessageType(): string;
   process(msg: MessageInterface): Promise<void>;
 }
+
+export interface SQSPublisherInterface<T> {
+  sendMessage(payload: T, delay?: number): Promise<void>;
+}

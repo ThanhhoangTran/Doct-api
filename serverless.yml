@@ -33,7 +33,7 @@ provider:
     NODE_ENV: ${opt:stage, 'dev'}
     APP_ENV: ${opt:stage, 'dev'}
     REGION: ${opt:region, 'ap-southeast-1'}
-    MAIN_QUEUE_URL: { Ref: MessageQueue }
+    NORMAL_QUEUE_URL: { Ref: MessageQueue }
     DB_URL: ${env:DB_URL}
 
   vpc:

@@ -27,7 +27,7 @@ export class ConsultationScheduleResolver {
 
   @Roles(ROLE_NAME.DOCTOR)
   @Mutation(_type => String)
-  public async upsertConsultationSchedule(@Args('input') input: UpsertConsultationScheduleInput, @UserContext() currentUser: UserContextInterface) {
+  public async upsertConsultationSchedule(@Args('input') input: UpsertConsultationScheduleInput, @UserContext() currentUser: UserContextInterface): Promise<string> {
     return await this._consultationScheduleService.upsertConsultationSchedule(input, currentUser);
   }
 }

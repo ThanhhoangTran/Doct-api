@@ -22,10 +22,6 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     private readonly roleRepository: RoleRepository,
   ) {}
-  async testResolver() {
-    const roles = await Role.find();
-    return roles;
-  }
 
   public async signUp(input: SignUpDto) {
     const { email, password, roleType, ...rest } = input;

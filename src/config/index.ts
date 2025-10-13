@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 
 export const configuration = {
@@ -29,6 +30,8 @@ export const configuration = {
     accessKey: process.env.AWS_ACCESS_KEY,
     secretKey: process.env.AWS_SECRET_KEY,
     s3BucketName: process.env.S3_BUCKET,
-    mainQueueUrl: process.env.MAIN_QUEUE_URL,
+    queueUrl: {
+      normalQueueUrl: process.env.NORMAL_QUEUE_URL || '',
+    },
   },
 };

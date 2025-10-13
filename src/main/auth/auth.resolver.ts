@@ -9,9 +9,13 @@ import { Auth } from '../../common/decorators/auth.decorator';
 import { UserContext } from '../../common/decorators/user.decorator';
 import { UserContextInterface } from '../../common/interface';
 import { User } from '../../entities/user.entity';
+import { TestQueuePublisher } from '../sqsWorkers/processors/testProcessor/publisher';
 @Resolver(() => User)
 export class AuthResolver {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly _testQueuePublisher: TestQueuePublisher,
+  ) {}
 
   @Query(_type => SignInResponse)
   async signIn(@Args('input') input: SignInDto): Promise<SignInResponse> {
@@ -27,5 +31,12 @@ export class AuthResolver {
   @Query(_type => GetMeResponse)
   async getMe(@UserContext() { id }: UserContextInterface): Promise<GetMeResponse> {
     return this.authService.getMe(id);
+  }
+
+  @Query(_type => Boolean)
+  async publishMessageToQueue(): Promise<boolean> {
+    await this._testQueuePublisher.sendMessage({ text: 'Hello from TestQueuePublisher' });
+
+    return true;
   }
 }

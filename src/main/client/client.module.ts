@@ -8,6 +8,7 @@ import { DatabaseModule } from '../../modules/database.module';
 import { JwtStrategy } from '../../service/jwt/strategies/jwt.strategy';
 import { ConsultationScheduleModule } from './apis/consultationSchedule/consultationSchedule.module';
 import { JwtCommonModule } from '../../modules/jwtModule.module';
+import { SQSModule } from '../../service/aws/sqs/sqs.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -26,6 +27,7 @@ import { JwtCommonModule } from '../../modules/jwtModule.module';
         // ChatMessageModule
       ],
     }),
+    SQSModule,
     AuthModule,
     TimeOpeningModule,
     ConsultationScheduleModule,

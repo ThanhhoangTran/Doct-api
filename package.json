@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.10.4",
+    "@aws-sdk/client-sqs": "^3.908.0",
     "@nestjs/apollo": "^12.2.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",

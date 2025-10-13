@@ -62,3 +62,8 @@ export const ROUTE_KEY = {
 } as const;
 
 export const SQS_INJECTION_TOKEN = 'SQS_INJECTION_TOKEN';
+export const MESSAGE_TYPE = {
+  TestProcessor: 'TestProcessor',
+};
+
+export const DEFAULT_DELAY_SECONDS = 0;
