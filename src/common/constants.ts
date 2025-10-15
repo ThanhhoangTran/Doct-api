@@ -25,7 +25,7 @@ export const ROLE_NAME = {
   SUPER_ADMIN: 'super_admin',
   DOCTOR: 'doctor',
   PATIENT: 'patient',
-} as const;
+};
 
 export type ROLE_NAME_TYPE = ENUM_TYPE<typeof ROLE_NAME>;
 

@@ -27,7 +27,7 @@ export class MetaPaginationInterface {
   currentPage: number;
 }
 
-export function PaginationResponse<T>(item: any) {
+export function PaginationResponse<T>(item: any): new () => { items: T[]; meta: MetaPaginationInterface } {
   @ObjectType({ isAbstract: true })
   class PaginationResponse {
     @Field(_type => [item])

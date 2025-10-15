@@ -1,19 +1,28 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GetPagingConsultationScheduleResponse } from './dtos/responses/getPagingConsultationScheduleResponses';
 import { UserContext } from '../../../../common/decorators/user.decorator';
-import { UserContextInterface } from '../../../../common/interface';
-import { ConsultationScheduleService } from './consultationSchedule.service';
+import { IUseCase, UserContextInterface } from '../../../../common/interface';
 import { Roles } from '../../../../common/decorators/roles.decorator';
 import { Auth } from '../../../../common/decorators/auth.decorator';
 import { ROLE_NAME } from '../../../../common/constants';
 import { PaginationDto } from '../../../../common/dtos/queryFilter.dto';
-import { UpsertConsultationScheduleInput } from './dtos/inputs/upsertConsultationScheduleInput.dto';
-import { GetPagingConsultationScheduleFilter } from './dtos/inputs/getPagingConsultationScheduleInput.dto';
+import { UpsertConsultationScheduleInputType } from './dtos/inputs/upsertConsultationScheduleInputType.dto';
+import { GetPagingConsultationScheduleFilter } from './dtos/inputs/getPagingConsultationScheduleFilter.dto';
+import { Inject } from '@nestjs/common';
+import { GetPagingConsultationScheduleUseCase } from '../../../../useCases/consultationSchedule/getPagingConsultationSchedules/usecase';
+import { GetPagingConsultationScheduleInput } from '../../../../useCases/consultationSchedule/getPagingConsultationSchedules/types/input';
+import { GetPagingConsultationScheduleResponse } from './dtos/responses/getPagingConsultationScheduleResponse';
+import { UpsertConsultationScheduleUseCase } from '../../../../useCases/consultationSchedule/upsertConsultationSchedules/usecase';
+import { UpsertConsultationScheduleInput } from '../../../../useCases/consultationSchedule/upsertConsultationSchedules/types/input';
 
 @Auth(['Roles'])
 @Resolver()
 export class ConsultationScheduleResolver {
-  public constructor(private readonly _consultationScheduleService: ConsultationScheduleService) {}
+  public constructor(
+    @Inject(GetPagingConsultationScheduleUseCase)
+    private readonly _getPagingConsultationSchedules: IUseCase<GetPagingConsultationScheduleInput, GetPagingConsultationScheduleResponse>,
+    @Inject(UpsertConsultationScheduleUseCase)
+    private readonly _upsertConsultationSchedule: IUseCase<UpsertConsultationScheduleInput, string>,
+  ) {}
 
   @Roles(ROLE_NAME.DOCTOR, ROLE_NAME.PATIENT)
   @Query(_type => GetPagingConsultationScheduleResponse)
@@ -22,12 +31,15 @@ export class ConsultationScheduleResolver {
     @Args('filter', { nullable: true }) filter: GetPagingConsultationScheduleFilter | null,
     @UserContext() user: UserContextInterface,
   ): Promise<GetPagingConsultationScheduleResponse> {
-    return await this._consultationScheduleService.getPagingConsultationSchedules(pagination, user, filter);
+    return await this._getPagingConsultationSchedules.execute({ pagination, user, filter: filter ?? {} });
   }
 
   @Roles(ROLE_NAME.DOCTOR)
   @Mutation(_type => String)
-  public async upsertConsultationSchedule(@Args('input') input: UpsertConsultationScheduleInput, @UserContext() currentUser: UserContextInterface): Promise<string> {
-    return await this._consultationScheduleService.upsertConsultationSchedule(input, currentUser);
+  public async upsertConsultationSchedule(@Args('input') input: UpsertConsultationScheduleInputType, @UserContext() currentUser: UserContextInterface): Promise<string> {
+    return await this._upsertConsultationSchedule.execute({
+      ...input,
+      userCtx: currentUser,
+    });
   }
 }

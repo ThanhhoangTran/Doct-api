@@ -4,7 +4,7 @@ import { RolesGuard } from '../guards/roles.guard';
 import { ROLES_KEY } from './roles.decorator';
 
 //scopes like ('roles', 'api-key', ...)
-export function Auth(scopes?: string[]) {
+export function Auth(scopes?: string[]): MethodDecorator & ClassDecorator {
   if (scopes && scopes.includes(ROLES_KEY)) {
     return applyDecorators(UseGuards(JwtAuthGuard, RolesGuard));
   }

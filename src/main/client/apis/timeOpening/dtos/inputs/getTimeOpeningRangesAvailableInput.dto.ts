@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { EVENT_TYPE } from '../../../../../../common/constants';
 
 @InputType()
-export class GetTimeOpeningRangesAvailableInput {
+export class GetTimeOpeningRangesAvailableInputType {
   @Field(_type => Date)
   startDate: Date;
 

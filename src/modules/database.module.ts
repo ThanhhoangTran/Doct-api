@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { MongooseModule, MongooseModuleFactoryOptions } from '@nestjs/mongoose';
 import { configuration } from '../config';
-import { ChatMessage, ChatMessageSchema } from '../schemas/chatMessage.schema';
-import { Conversation, ConversationSchema } from '../schemas/conversation.schema';
-import { UserConnection, UserConnectionSchema } from '../schemas/userConnection';
 import { clientDBConfig } from '../../db/dbconfig';
+import { UserRepository } from '../repositories/user.repository';
+import { RoleRepository } from '../repositories/role.repository';
+import { ConsultationScheduleRepository } from '../repositories/consultationSchedule.repository';
+import { TimeOpeningRepository } from '../repositories/timeOpening.repository';
 
 // const MONGODB_SCHEMAS = [
 //   { name: UserConnection.name, schema: UserConnectionSchema },
@@ -49,6 +49,7 @@ import { clientDBConfig } from '../../db/dbconfig';
 // PostgreSQL connection configuration
 const createPostgresConfig = (): TypeOrmModuleOptions => {
   const dbConfig = clientDBConfig(configuration.api.nodeEnv);
+
   return {
     ...dbConfig,
     keepConnectionAlive: true,
@@ -74,6 +75,8 @@ const createPostgresConfig = (): TypeOrmModuleOptions => {
       useFactory: createPostgresConfig,
     }),
   ],
+  providers: [UserRepository, RoleRepository, ConsultationScheduleRepository, TimeOpeningRepository],
+  exports: [TypeOrmModule, UserRepository, RoleRepository, ConsultationScheduleRepository, TimeOpeningRepository],
   // exports: [MongooseModule],
 })
 export class DatabaseModule {}

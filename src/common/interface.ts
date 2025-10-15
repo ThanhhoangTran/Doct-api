@@ -22,6 +22,10 @@ export interface UserContextInterface {
 }
 
 export interface Getter<Input, Output = void> {
+  execute?: (input: Input) => Promise<Output>;
+}
+
+export interface SyncGetter<Input, Output = void> {
   execute?: (input: Input) => Output;
 }
 
@@ -50,3 +54,11 @@ export interface SQSProcessorInterface {
 export interface SQSPublisherInterface<T> {
   sendMessage(payload: T, delay?: number): Promise<void>;
 }
+
+export type IUseCase<Input, Output = void> = {
+  execute(input: Input): Promise<Output>;
+};
+
+export type IInputValidator<Input, IValidatedResult = void> = {
+  validate(input: Input): Promise<IValidatedResult> | IValidatedResult;
+};

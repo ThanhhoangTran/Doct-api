@@ -2,7 +2,7 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { EVENT_TYPE } from '../../../../../../common/constants';
 
 @InputType()
-export class UpsertScheduleTimingEventInput {
+export class UpsertScheduleTimingEventInputType {
   @Field(_type => ID, { nullable: true })
   id?: string | null;
 

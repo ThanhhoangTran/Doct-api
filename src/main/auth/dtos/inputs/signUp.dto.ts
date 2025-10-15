@@ -1,6 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail, MinLength } from 'class-validator';
 import { Match } from '../../../../common/decorators/match.decorator';
+import { ROLE_NAME, ROLE_NAME_TYPE } from '../../../../common/constants';
 
 @InputType()
 export class SignUpDto {
@@ -28,6 +29,6 @@ export class SignUpDto {
   @Field(() => String)
   address: string;
 
-  @Field(() => String, { name: 'roleType' })
-  roleType: string;
+  @Field(() => ROLE_NAME, { name: 'roleType' })
+  roleType: ROLE_NAME_TYPE;
 }

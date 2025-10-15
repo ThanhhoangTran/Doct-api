@@ -9,7 +9,7 @@
   },
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "NODE_ENV=local IS_OFFLINE=true sls offline start --reloadHandler",
+    "dev": "IS_OFFLINE=true sls offline start --reloadHandler",
     "build": "rm -rf dist && yarn webpack",
     "start": "node --enable-source-maps .webpack/main.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
