@@ -5,7 +5,7 @@ import { SendMessageSQSInputDto } from './dtos/sendMessageSQSInputDto';
 
 @Injectable()
 export class SQSService {
-  private readonly _sqsClient: SQSClient;
+  private _sqsClient: SQSClient;
 
   constructor() {
     this._sqsClient = new SQSClient({ region: configuration.aws.region });

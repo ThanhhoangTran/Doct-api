@@ -17,6 +17,9 @@ const bootstrapServer = async (): Promise<Server> => {
       const adapter = new ExpressAdapter(expressApp);
       const nestApp = await NestFactory.create(ClientModule, adapter, {
         logger: ['verbose', 'debug', 'warn', 'error'],
+        cors: {
+          origin: '*',
+        },
       });
       nestApp.use(eventContext());
       await nestApp.init();

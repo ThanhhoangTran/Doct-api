@@ -10,8 +10,6 @@ export class TestQueuePublisher implements SQSPublisherInterface<TestProcessorMe
   constructor(private readonly _sqsService: SQSService) {}
 
   public async sendMessage(payload: TestProcessorMessage): Promise<void> {
-    console.log('Publishing message to TestProcessor queue:', payload);
-
     const message = {
       messageType: MESSAGE_TYPE.TestProcessor,
       body: JSON.stringify(payload),
