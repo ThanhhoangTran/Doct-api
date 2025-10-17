@@ -27,6 +27,10 @@ export class TimeOpeningResolver {
     @Inject(GetAvailableTimeOpeningRangesUseCase) private readonly _getAvailableTimeOpeningRanges: IUseCase<GetAvailableTimeOpeningRangesInput, TimeOpeningRangeAvailableResponse>,
   ) {}
 
+  /*
+  Required: for each week, doctor must set time opening for each event types (appointment, meeting, operation)
+  1. If event types -  appointment->  Allow patient to book appointment based on the available time opening set by doctor
+  */
   @Roles(ROLE_NAME.DOCTOR, ROLE_NAME.PATIENT)
   @Mutation(_type => TimeOpening)
   async upsertScheduleTimingEvent(@Args('input') input: UpsertScheduleTimingEventInputType, @UserContext() currentUser: UserContextInterface): Promise<TimeOpening> {
