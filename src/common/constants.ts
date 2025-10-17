@@ -45,10 +45,13 @@ export const CONSULTATION_TYPE = {
 };
 
 export const CONSULTATION_STATUS = {
-  CONFIRMED: 'confirmed',
-  CANCELLED: 'cancelled',
-  RESCHEDULED: 'rescheduled',
-  WAITING: 'waiting',
+  CONFIRMED: 'confirmed', // doctor has confirmed the consultation
+  CANCELLED: 'cancelled', // doctor has cancelled the consultation
+  RESCHEDULED: 'rescheduled', // doctor has rescheduled the consultation
+  WAITING: 'waiting', // patient is waiting for the consultation
+  COMPLETED: 'completed', // consultation has been completed
+  MISSED: 'missed', // patient has missed the consultation
+  IN_PROGRESS: 'in_progress', // consultation is in progress
 };
 
 export const INJECTION_TOKEN = {
@@ -67,3 +70,13 @@ export const MESSAGE_TYPE = {
 };
 
 export const DEFAULT_DELAY_SECONDS = 0;
+
+export const CONSULTATION_STATUS_FLOW = {
+  [CONSULTATION_STATUS.WAITING]: [CONSULTATION_STATUS.CONFIRMED, CONSULTATION_STATUS.CANCELLED, CONSULTATION_STATUS.RESCHEDULED],
+  [CONSULTATION_STATUS.CONFIRMED]: [CONSULTATION_STATUS.CANCELLED, CONSULTATION_STATUS.RESCHEDULED, CONSULTATION_STATUS.IN_PROGRESS, CONSULTATION_STATUS.MISSED],
+  [CONSULTATION_STATUS.IN_PROGRESS]: [CONSULTATION_STATUS.COMPLETED, CONSULTATION_STATUS.CANCELLED],
+  [CONSULTATION_STATUS.COMPLETED]: [],
+  [CONSULTATION_STATUS.CANCELLED]: [],
+  [CONSULTATION_STATUS.MISSED]: [],
+  [CONSULTATION_STATUS.RESCHEDULED]: [CONSULTATION_STATUS.CONFIRMED, CONSULTATION_STATUS.CANCELLED],
+};

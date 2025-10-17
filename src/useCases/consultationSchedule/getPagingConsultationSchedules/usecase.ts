@@ -25,16 +25,16 @@ export class GetPagingConsultationScheduleUseCase extends UseCaseAbstraction<Get
     const builder = this._consultationScheduleRepo.createQueryBuilder('ConsultationSchedule').leftJoin('ConsultationSchedule.patient', 'Patient');
 
     if (role.name === ROLE_NAME.DOCTOR) {
-      builder.innerJoin('ConsultationSchedule.timeOpening', 'TimeOpening').where('TimeOpening.userId = :doctorId');
+      builder.innerJoin('ConsultationSchedule.timeOpening', 'TimeOpening').where('TimeOpening.userId = :doctorId', { doctorId: id });
+    }
+
+    if (role.name === ROLE_NAME.PATIENT) {
+      builder.where('ConsultationSchedule.userId = :patientId', { patientId: id });
     }
 
     this._consultationScheduleFilterGetter.execute({
       builder,
       ...filter,
-    });
-
-    builder.setParameters({
-      doctorId: id,
     });
 
     return await new BuilderPaginationResponse<GetPagingConsultationScheduleResponse>(builder, pagination).execute();

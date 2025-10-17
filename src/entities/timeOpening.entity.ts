@@ -29,7 +29,7 @@ export class TimeOpening extends CustomBaseEntity {
   @Column({ type: 'uuid' })
   userId: string;
 
-  @Field(_type => [ConsultationSchedule])
+  @Field(_type => [ConsultationSchedule], { nullable: true })
   @OneToMany(_type => ConsultationSchedule, schedule => schedule.timeOpening)
   consultationSchedules: ConsultationSchedule[];
 }
