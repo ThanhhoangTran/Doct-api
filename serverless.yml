@@ -27,11 +27,11 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: ${opt:region, 'ap-southeast-1'}
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'local'}
 
   environment:
-    NODE_ENV: ${opt:stage, 'dev'}
-    APP_ENV: ${opt:stage, 'dev'}
+    NODE_ENV: ${opt:stage, 'local'}
+    APP_ENV: ${opt:stage, 'local'}
     REGION: ${opt:region, 'ap-southeast-1'}
     NORMAL_QUEUE_URL: { Ref: MessageQueue }
     DB_URL: ${env:DB_URL}

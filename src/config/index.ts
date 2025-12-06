@@ -34,4 +34,8 @@ export const configuration = {
       normalQueueUrl: process.env.NORMAL_QUEUE_URL || '',
     },
   },
+  sentry: {
+    dsn: process.env.SENTRY_DSN || '',
+    tracesSampleRate: 1.0,
+  },
 };

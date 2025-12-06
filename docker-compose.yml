@@ -6,7 +6,7 @@ networks:
 
 services:
   app:
-    container_name: dockt-api
+    container_name: doct-api
     build:
       context: .
       dockerfile: Dockerfile
@@ -19,7 +19,7 @@ services:
       - ./src:/opt/doct-api/src
     depends_on:
       - db
-      - redis
+      # - redis
   db:
     container_name: postgres_container_doct-db
     image: kartoza/postgis:12.0
@@ -35,19 +35,19 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=hoang@1234
 
-  mongo:
-    container_name: mongo_container_doct-db
-    image: mongo:latest
-    restart: always
-    networks:
-      - my_network
-    ports:
-      - 27017:27017
-    volumes:
-      - .docker/data/db/mongo:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=hoangtran
-      - MONGO_INITDB_ROOT_PASSWORD=hoang1234
+  # mongo:
+  #   container_name: mongo_container_doct-db
+  #   image: mongo:latest
+  #   restart: always
+  #   networks:
+  #     - my_network
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - .docker/data/db/mongo:/data/db
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=hoangtran
+  #     - MONGO_INITDB_ROOT_PASSWORD=hoang1234
 
   redis:
     container_name: redis_container_doct-db

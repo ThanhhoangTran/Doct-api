@@ -27,7 +27,7 @@ export class AuthResolver {
     private readonly _testQueuePublisher: TestQueuePublisher,
   ) {}
 
-  @Query(_type => SignInResponse)
+  @Mutation(_type => SignInResponse)
   async signIn(@Args('input') input: SignInDto): Promise<SignInOutput> {
     return await this._signIn.execute(input);
   }

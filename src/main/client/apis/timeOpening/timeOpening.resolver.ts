@@ -17,6 +17,7 @@ import { GetPagingTimeOpeningsUseCase } from '../../../../useCases/timeOpening/g
 import { GetPagingTimeOpeningInput } from '../../../../useCases/timeOpening/getPagingTimeOpenings/types/input';
 import { GetAvailableTimeOpeningRangesUseCase } from '../../../../useCases/timeOpening/getAvailableTimeOpeningRanges/usecase';
 import { GetAvailableTimeOpeningRangesInput } from '../../../../useCases/timeOpening/getAvailableTimeOpeningRanges/types/input';
+import { GetPagingSchedulerTimingEventFilter } from './dtos/inputs/getPagingTimeOpeningInput.dto';
 
 @Auth(['Roles'])
 @Resolver(() => TimeOpening)
@@ -40,10 +41,16 @@ export class TimeOpeningResolver {
     });
   }
 
+  @Roles(ROLE_NAME.DOCTOR)
   @Query(_type => GetPagingTimeOpeningResponse)
-  async getPagingScheduleTimingEvents(@Args('pagination') pagination: PaginationDto, @UserContext() currentUser: UserContextInterface): Promise<GetPagingTimeOpeningResponse> {
+  async getPagingScheduleTimingEvents(
+    @Args('pagination') pagination: PaginationDto,
+    @Args('filter', { nullable: true }) filter: GetPagingSchedulerTimingEventFilter,
+    @UserContext() currentUser: UserContextInterface,
+  ): Promise<GetPagingTimeOpeningResponse> {
     return await this._getPagingTimeOpenings.execute({
       pagination,
+      filter,
       userCtx: currentUser,
     });
   }

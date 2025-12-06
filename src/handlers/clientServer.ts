@@ -6,9 +6,13 @@ import { eventContext } from 'aws-serverless-express/middleware';
 import express from 'express';
 import { Server } from 'http';
 import { ClientModule } from '../main/client/client.module';
+import sentry from '@sentry/node';
+import { configuration } from '../config';
 
 let cachedServer: Server;
 let binaryMineTypes: string[] = [];
+
+const { dsn, tracesSampleRate } = configuration.sentry;
 
 const bootstrapServer = async (): Promise<Server> => {
   if (!cachedServer) {
@@ -31,13 +35,19 @@ const bootstrapServer = async (): Promise<Server> => {
   return cachedServer;
 };
 
+sentry.init({
+  dsn: dsn,
+  tracesSampleRate: tracesSampleRate,
+});
+
 export const handler: APIGatewayProxyHandler = async (event: any, context: Context) => {
   try {
     cachedServer = await bootstrapServer();
 
     return proxy(cachedServer, event as any, context, 'PROMISE').promise;
   } catch (error) {
-    console.log('🚀 APIGatewayProxyHandler= ~ error:', error);
+    sentry.captureEvent(event);
+    sentry.captureException(error);
     throw error;
   }
 };
