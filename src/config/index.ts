@@ -33,6 +33,7 @@ export const configuration = {
     queueUrl: {
       normalQueueUrl: process.env.NORMAL_QUEUE_URL || '',
     },
+    allowRealAws: process.env.ALLOW_REAL_AWS || false,
   },
   sentry: {
     dsn: process.env.SENTRY_DSN || '',

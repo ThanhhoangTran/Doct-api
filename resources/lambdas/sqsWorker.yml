@@ -2,6 +2,6 @@ sqsMessageExecutor:
   handler: ./src/handlers/sqsWorker.handler
   description: 'Process messages from SQS queue'
   events:
-    - sqs: arn:aws:sqs:${aws:region}:${aws:accountId}:${self:custom.sqs}
+    - sqs: arn:aws:sqs:${self:provider.region}:${self:custom.awsAccountIdByStage.${self:provider.stage}, '000000000000'}:${self:custom.sqs}
   timeout: 600
   memorySize: 256

@@ -7,6 +7,12 @@ custom:
   s3BucketName: ${self:custom.baseName}-s3-bucket
   sqs: ${self:custom.baseName}-message-queue
   sqs-dlq: ${self:custom.baseName}-message-dead-letter-queue
+  stage: ${opt:stage, 'local'}
+  awsAccountIdByStage:
+    local: '000000000000'
+    dev: ${env:AWS_ACCOUNT_ID, '000000000000'}
+    stg: ${env:AWS_ACCOUNT_ID, '000000000000'}
+    prod: ${env:AWS_ACCOUNT_ID, '000000000000'}
 
   webpack:
     webpackConfig: 'webpack.config.js'
@@ -23,18 +29,18 @@ custom:
 useDotenv: true
 
 provider:
-  profile: HoangTran
   name: aws
   runtime: nodejs18.x
   region: ${opt:region, 'ap-southeast-1'}
-  stage: ${opt:stage, 'local'}
+  stage: ${self:custom.stage}
 
   environment:
-    NODE_ENV: ${opt:stage, 'local'}
-    APP_ENV: ${opt:stage, 'local'}
+    NODE_ENV: ${self:custom.stage}
+    APP_ENV: ${self:custom.stage}
     REGION: ${opt:region, 'ap-southeast-1'}
     NORMAL_QUEUE_URL: { Ref: MessageQueue }
     DB_URL: ${env:DB_URL}
+    ALLOW_REAL_AWS: ${env:ALLOW_REAL_AWS, 'false'}
 
   vpc:
     securityGroupIds:
@@ -69,8 +75,8 @@ plugins:
 functions:
   - ${file(./resources/lambdas/clientServer.yml)}
   - ${file(./resources/lambdas/sqsWorker.yml)}
-  # - ${file(./resources/lambdas/connectionServer.yml)}
-  # - ${file(./resources/lambdas/testServer.yml)}
+  - ${file(./resources/lambdas/connectionServer.yml)}
+  - ${file(./resources/lambdas/testServer.yml)}
 
 resources:
   - ${file(./resources/s3.yml)}

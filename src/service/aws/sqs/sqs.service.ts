@@ -2,6 +2,7 @@ import { SendMessageCommand, SendMessageCommandOutput, SQSClient } from '@aws-sd
 import { Injectable } from '@nestjs/common';
 import { configuration } from '../../../config';
 import { SendMessageSQSInputDto } from './dtos/sendMessageSQSInputDto';
+import { APP_ENV } from '../../../common/constants';
 
 @Injectable()
 export class SQSService {
@@ -13,6 +14,10 @@ export class SQSService {
 
   public async sendMessage(input: SendMessageSQSInputDto): Promise<SendMessageCommandOutput> {
     const { queueUrl, messageBody, delaySeconds } = input;
+
+    if (!configuration.aws.allowRealAws || APP_ENV.LOCAL === configuration.api.nodeEnv) {
+      throw new Error('Local-safe policy: blocked sending message to real AWS SQS in local environment');
+    }
 
     const params = {
       QueueUrl: queueUrl,

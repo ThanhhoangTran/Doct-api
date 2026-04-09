@@ -1,5 +1,6 @@
 import { ApiGatewayManagementApi } from 'aws-sdk';
 import { configuration } from '../../config';
+import { APP_ENV } from '../../common/constants';
 
 export class GatewayAdapter {
   private apiGateway: ApiGatewayManagementApi;
@@ -10,7 +11,7 @@ export class GatewayAdapter {
   }
 
   public async sendToConnection(connectionId: string, payload: string): Promise<void> {
-    if (process.env.APP_ENV === configuration.api.nodeEnv) {
+    if (APP_ENV.LOCAL === configuration.api.nodeEnv) {
       return;
     }
 

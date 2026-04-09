@@ -1,6 +1,8 @@
 export const APP_ENV = {
   LOCAL: 'local',
   DEV: 'dev',
+  STG: 'stg',
+  PROD: 'prod',
   TEST: 'test',
 };
 
